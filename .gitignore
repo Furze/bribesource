@@ -1,0 +1,35 @@
+pom.xml.releaseBackup
+release.properties
+tree.txt
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# SoapUI
+global-groovy.log
+soapui*.log
+
+#Run files produced by shell scripts
+*.run
+
+morepork-website/app/bower_components/
+morepork-website/node_modules/
+/install-guide-module/nbproject/private/
+/quick-use-module/nbproject/private/
+
+node_modules
+
