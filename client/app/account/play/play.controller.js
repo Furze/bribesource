@@ -45,6 +45,7 @@ angular.module('storyApp')
 
       $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
           $scope.winner = result.results[0].name;
+          $scope.showWinner = true;
       })
     }
 
