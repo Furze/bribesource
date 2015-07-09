@@ -40,10 +40,10 @@ var all = {
       }
     }
   },
-
+  
   google: {
-    clientID:     process.env.GOOGLE_ID || 'id',
-    clientSecret: process.env.GOOGLE_SECRET || 'secret',
+    clientID:     process.env.GOOGLE_ID || '420908109166-hnm731k9t76gmkjg6u6o9cjtgf2ce0hd.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'xK6IMmJ_qAxKTN2A9jPTx3N5',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'
   }
 };
