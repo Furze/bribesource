@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket) {
+  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , socket) {
     $scope.errors = {};
 
     $scope.gameid = $stateParams.id
@@ -9,12 +9,9 @@ angular.module('storyApp')
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
         $scope.game = c;
       });
+   
 
-    $http.get('/api/bribes').success(function(c) {
-        $scope.bribes = c;
-      });
-
-     $scope.outcomes = [];
+    $scope.outcomes = [];
     
     $http.get('/api/outcomes').success(function(outcomes) {
       $scope.outcomes = outcomes;

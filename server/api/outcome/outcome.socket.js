@@ -4,21 +4,21 @@
 
 'use strict';
 
-var game = require('./game.model');
+var thing = require('./outcome.model');
 
 exports.register = function(socket) {
-  game.schema.post('save', function (doc) {
+  outcome.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  game.schema.post('remove', function (doc) {
+  outcome.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('game:save', doc);
+  socket.emit('outcome:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('game:remove', doc);
+  socket.emit('outcome:remove', doc);
 }
