@@ -18,38 +18,34 @@ angular.module('storyApp')
       socket.syncUpdates('outcome', $scope.outcomes);
     });
 
-    $scope.addOutcome = function() {
-      if($scope.newOutcome === '') {
-        return;
-      }
-      $http.post('/api/outcomes', { name: $scope.newOutcome });
-      $scope.newOutcome = '';
-    };
-
-    $scope.deleteOutcome = function(outcome) {
-      $http.delete('/api/outcomes/' + outcome._id);
-    };
-
-   $scope.saveOutcome = function(outcome) {
-      $http.put('/api/outcomes/'+outcome._id, outcome);      
-    };
-
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('outcome');
+    $http.get('/api/bribes').success(function(outcomes) {
+      $scope.bribes = bribes;
+      socket.syncUpdates('bribe', $scope.bribes);
     });
 
-    // $scope.changePassword = function(form) {
-    //   $scope.submitted = true;
-    //   if(form.$valid) {
-    //     Auth.changePassword( $scope.user.oldPassword, $scope.user.newPassword )
-    //     .then( function() {
-    //       $scope.message = 'Password successfully changed.';
-    //     })
-    //     .catch( function() {
-    //       form.password.$setValidity('mongoose', false);
-    //       $scope.errors.other = 'Incorrect password';
-    //       $scope.message = '';
-    //     });
-    //   }
-		// };
+    $scope.play = function() {
+
+      var params = {};
+      var items = []
+      for(var i=0;i<outcomes.length;i++){
+
+        var bribevalue=1;
+        for(var j=0;j<bribes.length;j++){
+          if(outcome.bribe== bribe._id){
+            bribevalue = bribe.value;
+          }
+        }
+        var item = { name: outcome.name , weight: Number(bribevalue)};
+
+        items.push(item);
+
+      }
+
+      $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
+          $scope.winner = result.results[0].name;
+      })
+    }
+
+
+    
   });
