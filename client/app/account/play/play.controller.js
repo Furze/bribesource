@@ -18,7 +18,7 @@ angular.module('storyApp')
       socket.syncUpdates('outcome', $scope.outcomes);
     });
 
-    $http.get('/api/bribes').success(function(outcomes) {
+    $http.get('/api/bribes').success(function(bribes) {
       $scope.bribes = bribes;
       socket.syncUpdates('bribe', $scope.bribes);
     });
@@ -27,10 +27,11 @@ angular.module('storyApp')
 
       var params = {};
       var items = []
-      for(var i=0;i<outcomes.length;i++){
-
+      for(var i=0;i<$scope.outcomes.length;i++){
+        var outcome = $scope.outcomes[i];
         var bribevalue=1;
-        for(var j=0;j<bribes.length;j++){
+        for(var j=0;j<$scope.bribes.length;j++){
+          var bribe = $scope.bribes[j];
           if(outcome.bribe== bribe._id){
             bribevalue = bribe.value;
           }
@@ -40,6 +41,7 @@ angular.module('storyApp')
         items.push(item);
 
       }
+      params.items = items;
 
       $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
           $scope.winner = result.results[0].name;

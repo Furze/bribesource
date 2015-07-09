@@ -21,7 +21,7 @@ angular.module('storyApp')
       .state('gameplay', {
         url: '/game/:id/play',
         templateUrl: 'app/account/play/play.html',
-        controller: 'GameCtrl'
+        controller: 'PlayCtrl'
       })
       .state('settings', {
         url: '/settings',
