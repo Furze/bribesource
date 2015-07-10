@@ -17,7 +17,10 @@ function startDecisionSimulation(items) {
 
 function simulate(items, resultList) {
   if (items.length == 1) {
-    resultList.push({'name': items[0].name, 'position': resultList.length+1});
+    resultList.push({
+      'name': items[0].name,
+      'position': resultList.length + 1
+    });
     return resultList;
   }
 
@@ -28,26 +31,29 @@ function simulate(items, resultList) {
     if (i === 0) {
       portions[items[i].name] = items[i].weight
     } else {
-      portions[items[i].name] = items[i].weight + portions[items[i-1].name];
+      portions[items[i].name] = items[i].weight + portions[items[i - 1].name];
     }
   }
 
-  var randomNumber =  _.random(1, totalWeight);
+  var randomNumber = getRandomNumber(1, totalWeight);
   var result = {};
   result.random = randomNumber + ' from range:  1-' + totalWeight;
   result.portions = portions;
-  result.winner = determineWinner(portions,randomNumber);
-  console.log('Iteration: ' + (resultList.length+1));
+  result.winner = determineWinner(portions, randomNumber);
+  console.log('Iteration: ' + (resultList.length + 1));
   console.log(result);
 
-  resultList.push({'name':result.winner , 'position': resultList.length+1});
-  removeWinner(result.winner,items);
+  resultList.push({
+    'name': result.winner,
+    'position': resultList.length + 1
+  });
+  removeWinner(result.winner, items);
   return simulate(items, resultList);
 }
 
-function removeWinner(winner, items){
-for (var i = 0; i < items.length; i++) {
-    if(items[i].name === winner){
+function removeWinner(winner, items) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].name === winner) {
       items.splice(i, 1);
     }
   };
@@ -62,10 +68,13 @@ function calculateTotalWeight(items) {
 }
 
 function determineWinner(portions, random) {
-  for(var i in portions){
+  for (var i in portions) {
     if (random <= portions[i]) {
       return i;
     };
   }
 }
 
+function getRandomNumber(minRange, maxRange) {
+  return _.random(minRange, maxRange);
+}
