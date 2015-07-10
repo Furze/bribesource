@@ -4,7 +4,8 @@ var _ = require('lodash');
 
 exports.runDecisionSimulation = function(req, res) {
   var result = startDecisionSimulation(req.body.items);
-  console.log('Result: ' + result);
+  console.log('Result: ');
+  console.log(result.results);
   return res.json(result);
 };
 
@@ -33,7 +34,7 @@ function simulate(items, resultList) {
 
   var randomNumber =  _.random(1, totalWeight);
   var result = {};
-  result.random = randomNumber;
+  result.random = randomNumber + ' from range:  1-' + totalWeight;
   result.portions = portions;
   result.winner = determineWinner(portions,randomNumber);
   console.log('Iteration: ' + (resultList.length+1));
