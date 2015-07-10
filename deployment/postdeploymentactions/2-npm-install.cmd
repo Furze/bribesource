@@ -1,3 +1,4 @@
 pushd "%DEPLOYMENT_TARGET%"
-npm install  
+npm install
+bower install
 popd
