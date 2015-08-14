@@ -2,7 +2,7 @@
 /* globals Raphael: true*/
 
 
-Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
+Raphael.fn.pieChart = function(cx, cy, r, values, data, stroke) {
 
   var paper = this,
     // slices = [],
@@ -30,7 +30,6 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
           angleplus = 360 * value / total,
           popangle = angle + (angleplus / 2),
           color = Raphael.hsb(start, .75, 1),
-          ms = 500,
           delta = 30,
           bcolor = Raphael.hsb(start, 1, 1),
 
@@ -42,7 +41,7 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
             stroke: stroke,
             "stroke-width": 3
           }),
-          txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), labels[j]).attr({
+          txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), data[j].label).attr({
             fill: bcolor,
             stroke: "none",
             opacity: 0,
@@ -57,34 +56,9 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
           p.endAngle = (angle + angleplus);
 
 
-          // console.log("angle, angle + angleplus = ", cx, cy, r, angle, angle + angleplus );
 
 
-          // console.log('value = ', value);
-          // console.log('angleplus = ', angleplus);
-          // console.log('popangle = ', popangle);
 
-          // p.mouseover(function() {
-          //   console.log('p = ', p);
-          //   var cc =  "s1.1 1.1 " + cx + " " + cy;
-
-          //   console.log('cc = ', cc);
-
-
-          //   p.stop().animate({
-          //     transform: "s1.1 1.1 " + cx + " " + cy
-          //   }, ms, "elastic");
-          //   txt.stop().animate({
-          //     opacity: 1
-          //   }, ms, "elastic");
-          // }).mouseout(function() {
-          //   p.stop().animate({
-          //     transform: ""
-          //   }, ms, "elastic");
-          //   txt.stop().animate({
-          //     opacity: 0
-          //   }, ms);
-          // });
 
           angle += angleplus;
           chart.push(p);
@@ -151,21 +125,32 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
 
 $(function() {
 
-  // var values = [],
-  //     labels = [];
-
   var values = [40, 26, 5, 5];
-  var labels = ['Story 1', 'Story 2', 'Story 3', 'Story 4'];
-  // var values = [40, 26];
-  // var labels = ['Story 1', 'Story 2'];
+  // var labels = ['Story 1', 'Story 2', 'Story 3', 'Story 4'];
+
+  var data = [{
+    value: 40,
+    label: 'Story 1'
+  },{
+    value: 26,
+    label: 'Story 2'
+  },{
+    value: 5,
+    label: 'Story 3'
+  },{
+    value: 5,
+    label: 'Story 4'
+  }]; 
+  
 
   var total = 0;
+
   $.each(values, function() {
     total += this;
   });
 
 
-  var pieChart = Raphael("holder", 700, 700).pieChart(350, 350, 200, values, labels, "#fff");
+  var pieChart = Raphael("holder", 700, 700).pieChart(350, 350, 200, values, data, "#fff");
   
   $("button").click(function() {
     pieChart.spin();
