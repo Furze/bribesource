@@ -2,10 +2,9 @@
 /* globals Raphael: true*/
 
 
-Raphael.fn.pieChart = function(cx, cy, r, values, data, stroke) {
-
+Raphael.fn.pieChart = function(cx, cy, r, data, stroke) {
+  "use strict";
   var paper = this,
-    // slices = [],
     slices = paper.set(),
     rad = Math.PI / 180,
     chart = this.set();
@@ -22,144 +21,86 @@ Raphael.fn.pieChart = function(cx, cy, r, values, data, stroke) {
   var angle = 0,
     total = 0,
     start = 0,
+
     process = function(j) {
       console.log('j = ', j);
+      var value = data[j].value,
+        angleplus = 360 * value / total,
+        popangle = angle + (angleplus / 2),
+        color = Raphael.hsb(start, 0.75, 1),
+        delta = 30,
+        bcolor = Raphael.hsb(start, 1, 1),
 
+        p = sector(cx, cy, r, angle, angle + angleplus, {
+          fill: "90-" + bcolor + "-" + color,
+          stroke: stroke,
+          "stroke-width": 3
+        }),
+        txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), data[j].label).attr({
+          fill: bcolor,
+          stroke: "none",
+          opacity: 0,
+          "font-size": 20
+        });
+      console.log("startAngle = ", angle);
+      console.log("endAngle = ", (angle + angleplus));
+      p.startAngle = angle;
+      p.endAngle = (angle + angleplus);
+      angle += angleplus;
+      chart.push(p);
+      chart.push(txt);
+      start += 0.1;
+      return p;
+    };
 
-      var value = values[j],
-          angleplus = 360 * value / total,
-          popangle = angle + (angleplus / 2),
-          color = Raphael.hsb(start, .75, 1),
-          delta = 30,
-          bcolor = Raphael.hsb(start, 1, 1),
+  for (var i = 0, ii = data.length; i < ii; i++) {
+    total += data[i].value;
+  }
 
-
-          // sector(cx, cy, r, startAngle, endAngle, params
-
-          p = sector(cx, cy, r, angle, angle + angleplus, {
-            fill: "90-" + bcolor + "-" + color,
-            stroke: stroke,
-            "stroke-width": 3
-          }),
-          txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), data[j].label).attr({
-            fill: bcolor,
-            stroke: "none",
-            opacity: 0,
-            "font-size": 20
-          });
-
-          console.log("startAngle = ", angle);
-          console.log("endAngle = ", (angle + angleplus) );
-
-
-          p.startAngle = angle;
-          p.endAngle = (angle + angleplus);
-
-
-
-
-
-
-          angle += angleplus;
-          chart.push(p);
-          chart.push(txt);
-          start += .1;
-
-
-
-
-
-
-          return p;
-        };
-        
-        for (var i = 0, ii = values.length; i < ii; i++) {
-          total += values[i];
-        }
-
-        for (i = 0; i < ii; i++) {
-          var slice = process(i);
-
-          console.log('slice = ', slice);
-
-
-
-          slices.push(slice);
-
-        }
-
-
-      chart.spin = function() {
-        // var anim = Raphael.animation({cx: 900, cy: 99999}, 2e3);
-
-
-
-        var result = function (slice) {
-
-          console.log("slice.endAngle, slice.startAngle = ", slice.endAngle, slice.startAngle);
-
-
-
-          var r = Math.random() * (slice.endAngle - slice.startAngle) + slice.startAngle;
-          return (360 * 10) - r;
-        };
-
-
-        console.log('slices = ', slices);
-
-
-
-        slices.stop().animate({
-            transform:"r-" + result(slices.items[2]) + ",350,350"
-          }, 5000, "<>");
-      };
-
-
-
-
-
-        return chart;
-      };
-
-
+  for (i = 0; i < ii; i++) {
+    var slice = process(i);
+    console.log('slice = ', slice);
+    slices.push(slice);
+  }
+  chart.spin = function() {
+    var result = function(slice) {
+      console.log("slice.endAngle, slice.startAngle = ", slice.endAngle, slice.startAngle);
+      var r = Math.random() * (slice.endAngle - slice.startAngle) + slice.startAngle;
+      return (360 * 10) - r;
+    };
+    console.log('slices = ', slices);
+    slices.stop().animate({
+      transform: "r-" + result(slices.items[2]) + ",350,350"
+    }, 5000, "<>");
+  };
+  return chart;
+};
 
 $(function() {
-
-  var values = [40, 26, 5, 5];
-  // var labels = ['Story 1', 'Story 2', 'Story 3', 'Story 4'];
-
+  "use strict";
   var data = [{
     value: 40,
     label: 'Story 1'
-  },{
+  }, {
     value: 26,
     label: 'Story 2'
-  },{
+  }, {
     value: 5,
     label: 'Story 3'
-  },{
+  }, {
     value: 5,
     label: 'Story 4'
-  }]; 
-  
+  }];
 
   var total = 0;
-
-  $.each(values, function() {
+  $.each(data, function() {
     total += this;
   });
 
+  var pieChart = new Raphael("holder", 700, 700).pieChart(350, 350, 200, data, "#fff");
 
-  var pieChart = Raphael("holder", 700, 700).pieChart(350, 350, 200, values, data, "#fff");
-  
   $("button").click(function() {
     pieChart.spin();
-    // var anim = Raphael.animation({cx: 600, cy: 600}, 2e3);
-
-    // pieChart.animate(anim); // run the given animation immediately
-
-    // pieChart.spin();
-
   });
 
 });
