@@ -16,30 +16,39 @@ angular.module('storyApp')
 
      $scope.outcomes = [];
     
-    $http.get('/api/outcomes').success(function(outcomes) {
+    $scope.getOutcomes = function() {
+       $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
       $scope.outcomes = outcomes;
       socket.syncUpdates('outcome', $scope.outcomes);
     });
+    }
 
     $scope.addOutcome = function() {
       if($scope.newOutcome === '') {
         return;
       }
-      $http.post('/api/outcomes', { name: $scope.newOutcome });
+      $http.post('/api/outcomes', { name: $scope.newOutcome, game: $scope.gameid });
       $scope.newOutcome = '';
+      $scope.getOutcomes();
     };
 
     $scope.deleteOutcome = function(outcome) {
-      $http.delete('/api/outcomes/' + outcome._id);
+      $http.delete('/api/outcomes/' + outcome._id).then(function(){
+        $scope.getOutcomes();  
+      });      
     };
 
    $scope.saveOutcome = function(outcome) {
-      $http.put('/api/outcomes/'+outcome._id, outcome);      
+      $http.put('/api/outcomes/'+outcome._id, outcome).then(function(){
+        $scope.getOutcomes();
+      })     
     };
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('outcome');
     });
+
+    $scope.getOutcomes();
 
     // $scope.changePassword = function(form) {
     //   $scope.submitted = true;

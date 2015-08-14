@@ -13,8 +13,12 @@ var _ = require('lodash');
 var Outcome = require('./outcome.model');
 
 // Get list of outcomes
-exports.index = function(req, res) {
-  Outcome.find(function (err, outcomes) {
+exports.index = function(req, res) {  
+  var q = Outcome.find();
+  if(req.query.game){
+    q.where( {game: req.query.game} );
+  }
+  q.exec(function (err, outcomes) {
     if(err) { return handleError(res, err); }
     return res.json(200, outcomes);
   });

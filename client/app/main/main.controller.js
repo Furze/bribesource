@@ -5,21 +5,27 @@ angular.module('storyApp')
 
     $scope.games = [];
     
-    $http.get('/api/games').success(function(games) {
-      $scope.games = games;
-      socket.syncUpdates('game', $scope.games);
-    });
+    $scope.getGames = function() {
+      $http.get('/api/games').success(function(games) {
+        $scope.games = games;
+        socket.syncUpdates('game', $scope.games);
+      });
+    }
 
     $scope.addGame = function() {
       if($scope.newGame === '') {
         return;
       }
-      $http.post('/api/games', { name: $scope.newGame });
+      $http.post('/api/games', { name: $scope.newGame }).then(function(){
+        $scope.getGames();
+      })
       $scope.newGame = '';
     };
 
     $scope.deleteGame = function(game) {
-      $http.delete('/api/games/' + game._id);
+      $http.delete('/api/games/' + game._id).then(function(){
+          $scope.getGames();
+      })
     };
 
     $scope.$on('$destroy', function () {
@@ -50,4 +56,6 @@ angular.module('storyApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });
+
+    $scope.getGames();
   });
