@@ -7,7 +7,8 @@ var OutcomeSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  game: String
+  game: String,
+  bribe: String
 });
 
 module.exports = mongoose.model('Outcome', OutcomeSchema);
