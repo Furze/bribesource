@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , socket) {
+  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService) {
     $scope.errors = {};
 
     $scope.gameid = $stateParams.id
@@ -20,8 +20,8 @@ angular.module('storyApp')
 
             var o = $scope.outcomes;
             for(var i=0;i<$scope.outcomes.length;i++){
-              var outcome = $scope.outcomes[i];
-              var bribevalue=1;
+              var outcome = $scope.outcomes[i];              
+              outcome.bribevalue=1;
               var bribename ='Not assigned';
               for(var j=0;j<$scope.bribes.length;j++){
                 var bribe = $scope.bribes[j];
@@ -29,7 +29,7 @@ angular.module('storyApp')
                   if(bribe.value){
                     outcome.bribevalue = bribe.value;  
                   }else{
-                    outcome.bribevalue=1;
+                    
                   }
                   outcome.bribename = bribe.name;                  
                 }
@@ -49,20 +49,30 @@ angular.module('storyApp')
       var params = {};
       var items = []
 
+      var labels = [];
+      var  values = [];
+
       for(var i=0;i<$scope.outcomes.length;i++){
         var outcome = $scope.outcomes[i];
         var item = { name: outcome.name , weight: Number(outcome.bribevalue)};
-
+        labels.push(item.name);
+        values.push(item.weight);
         items.push(item);
 
       }
       params.items = items;
 
+      PieService.renderPie(labels,values);
+
       $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
           $scope.winner = result.results[0].name;
           $scope.showWinner = true;
+
+          //need to save the game winner
+    
       })
     }
+
 
 
     
