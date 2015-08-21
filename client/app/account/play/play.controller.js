@@ -8,35 +8,50 @@ angular.module('storyApp')
 
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
         $scope.game = c;
-      });
-   
 
-    $scope.outcomes = [];
-    
-    $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
-      $scope.outcomes = outcomes;
+          $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
+            $scope.bribes = bribes;
+            socket.syncUpdates('bribe', $scope.bribes);
+
+            $scope.outcomes = [];
+
+            $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
+            $scope.outcomes = outcomes;
+
+            var o = $scope.outcomes;
+            for(var i=0;i<$scope.outcomes.length;i++){
+              var outcome = $scope.outcomes[i];
+              var bribevalue=1;
+              var bribename ='Not assigned';
+              for(var j=0;j<$scope.bribes.length;j++){
+                var bribe = $scope.bribes[j];
+                if(outcome.bribe==bribe._id){
+                  if(bribe.value){
+                    outcome.bribevalue = bribe.value;  
+                  }else{
+                    outcome.bribevalue=1;
+                  }
+                  outcome.bribename = bribe.name;                  
+                }
+              }
+            }
+
+            $scope.play();
+          });
+      });
+
       socket.syncUpdates('outcome', $scope.outcomes);
     });
 
-    // $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
-    //   $scope.bribes = bribes;
-    //   socket.syncUpdates('bribe', $scope.bribes);
-    // });
 
     $scope.play = function() {
 
       var params = {};
       var items = []
+
       for(var i=0;i<$scope.outcomes.length;i++){
         var outcome = $scope.outcomes[i];
-        var bribevalue=1;
-        for(var j=0;j<$scope.bribes.length;j++){
-          var bribe = $scope.bribes[j];
-          if(outcome.bribe== bribe._id){
-            bribevalue = bribe.value;
-          }
-        }
-        var item = { name: outcome.name , weight: Number(bribevalue)};
+        var item = { name: outcome.name , weight: Number(outcome.bribevalue)};
 
         items.push(item);
 

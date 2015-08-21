@@ -8,7 +8,7 @@
         <button type="button" class="close" ng-click="play()">Play</button>
 
         <div ng-show="showWinner">
-          The winner is: {{winner}}.
+          The winner is: {{winner}}.  Congratulations.
         </div>        
 
     </div>    
@@ -19,11 +19,7 @@
     <div class="col-lg-12">
       
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="outcome in outcomes">
-        <li>{{outcome.name}}
-              <select id="outcomebribe" ng-model="outcome.bribe">
-                  <option value="{{brige._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>              
-              </select>
-        </li>
+        <li>{{outcome.name}} {{outcome.bribename}} {{outcome.bribevalue}}</li>
       </ul>
 
 
