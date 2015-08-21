@@ -13,15 +13,15 @@ angular.module('storyApp')
 
     $scope.outcomes = [];
     
-    $http.get('/api/outcomes').success(function(outcomes) {
+    $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
       $scope.outcomes = outcomes;
       socket.syncUpdates('outcome', $scope.outcomes);
     });
 
-    $http.get('/api/bribes').success(function(bribes) {
-      $scope.bribes = bribes;
-      socket.syncUpdates('bribe', $scope.bribes);
-    });
+    // $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
+    //   $scope.bribes = bribes;
+    //   socket.syncUpdates('bribe', $scope.bribes);
+    // });
 
     $scope.play = function() {
 
