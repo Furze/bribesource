@@ -11,10 +11,7 @@
         <li>{{outcome.name}} {{outcome.bribename}} {{outcome.bribevalue}}</li>
         </ul>
 
-
-        <div ng-show="showWinner">
-          The winner is: {{winner}}.  Congratulations.
-        </div>        
+              
 
     </div>    
   </div>
@@ -27,8 +24,16 @@
     </div>
   </div>
 
+  <div class="row">
+      <div class="col-lg-12">
 
-</div>
+         <div ng-show="showWinner" style="color: green">    
+                <h4>    
+                  The winner is: {{winner}}. <br/> Congratulations.          
+                </h4>
+          </div> 
+      </div>
+  </div>
 
 
 

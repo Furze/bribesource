@@ -18,7 +18,7 @@
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
         <li>
         {{bribe.name}} <a href="#" ng-click="saveBribe(bribe)" tooltip="{{bribe.info}}">save</a>
-        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="selectedBribe.value">
+        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value">
         <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
         </li>
       </ul>
