@@ -62,14 +62,14 @@ angular.module('storyApp')
       }
       params.items = items;
 
-      PieService.renderPie(labels,values);
-
       $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
           $scope.winner = result.results[0].name;
-          $scope.showWinner = true;
 
+          PieService.renderPie(labels,values,function(){            
+            $scope.showWinner = true;
+            $scope.$apply();  
+          });
           //need to save the game winner
-    
       })
     }
 
