@@ -18,7 +18,7 @@
         <li><a href="#" tooltip="{{outcome.info}}">{{outcome.name}}
               <select id="outcomebribe" ng-model="outcome.bribe">
                   <option value="">---Please select---</option>
-                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>              
+                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>              
               </select>
           <a href="#" ng-click="saveOutcome(outcome)">save</a>
           <button type="button" class="close" ng-click="deleteOutcome(outcome)">&times;</button></a>
