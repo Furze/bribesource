@@ -9,8 +9,8 @@ module.exports = {
   DOMAIN: 'http://localhost:9000',
   SESSION_SECRET: "story-secret",
 
-  GOOGLE_ID: 'app-id',
-  GOOGLE_SECRET: 'secret',
+  GOOGLE_ID: '444090684595-n4po5b8mv86mqjmg0i8onb2pkdctjdvi.apps.googleusercontent.com',
+  GOOGLE_SECRET: 'R0oFAJNNcwgzw0GLm44o5l1J',
 
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''
