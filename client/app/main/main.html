@@ -37,17 +37,21 @@
   </div>
 </header>
 
-
-<div class="container">  
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Current Games:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="game in games">
-        <li><a href="/game/{{game._id}}" tooltip="{{thing.info}}">{{game.name}}<button type="button" class="close" ng-click="deleteGame(game)">&times;</button></a></li>
-      </ul>
+  <div class="container">  
+    <div class="row">
+      <div class="col-sm-6 col-md-4" ng-repeat="game in games">
+          <div class="thumbnail">
+            <img src="{{game.gameCreatorImageUrl}}" >
+            <div class="caption">
+              <h3>{{game.name}}</h3>
+              <p><a href="/game/{{game._id}}" class="btn btn-default" role="button">Play This Game</a>
+              <button type="button" class="close" ng-click="deleteGame(game)">&times;</button>
+              </p>
+            </div>
+          </div>
+      </div>
     </div>
-  </div>
-
+  </div>  
 
   
   <form class="thing-form">   

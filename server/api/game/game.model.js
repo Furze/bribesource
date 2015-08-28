@@ -7,7 +7,9 @@ var GameSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  winner: String
+  winner: String,
+  gameCreator: String,
+  gameCreatorImageUrl: String
 });
 
 module.exports = mongoose.model('Game', GameSchema);
