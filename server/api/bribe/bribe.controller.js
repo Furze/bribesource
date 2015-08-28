@@ -14,7 +14,14 @@ var Bribe = require('./bribe.model');
 
 // Get list of bribes
 exports.index = function(req, res) {
-  Bribe.find(function (err, bribes) {
+  var q = Bribe.find();
+  if(req.query.game){
+    q.where( {
+      $or: [ {game: req.query.game} ,
+             {game: { $exists: false} } ]
+           });
+  }
+  q.exec(function (err, bribes) {
     if(err) { return handleError(res, err); }
     return res.json(200, bribes);
   });

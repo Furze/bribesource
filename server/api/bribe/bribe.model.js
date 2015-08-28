@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 var BribeSchema = new Schema({
   name: String,
+  game: String,
   info: String,
   active: Boolean,
   value: Number

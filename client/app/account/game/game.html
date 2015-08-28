@@ -14,6 +14,33 @@
     </div>
   </div>
 
+
+
+   <div class="container" ng-if="!game.winner && currentUserIsGameCreator">  
+  <div class="row">
+    <div class="col-lg-12">
+      <h2 class="page-header">Available Bribes:</h2>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
+        <li>
+        {{bribe.name}} <a href="#" ng-click="saveBribe(bribe)" tooltip="{{bribe.info}}">save</a>
+        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value">
+        <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <form class="thing-form">
+    <p class="input-group">
+      <input type="text" class="form-control" placeholder="Add a new bribe here." ng-model="newBribe">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
+      </span>
+    </p>
+  </form>
+</div>
+
+
  <div ng-disabled="game.winner" class="container">
   <div class="row">
     <div ng-disabled="game.winner" class="col-lg-12">

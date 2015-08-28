@@ -8,6 +8,7 @@ angular.module('storyApp')
 
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
         $scope.game = c;
+        $scope.checkGameCreator();
       });
 
     $http.get('/api/bribes').success(function(c) {
@@ -49,6 +50,47 @@ angular.module('storyApp')
     });
 
     $scope.getOutcomes();
+
+    $scope.checkGameCreator = function() {
+      Auth.isLoggedInAsync(function(val) {
+        $scope.isLoggedIn = val;
+        if($scope.isLoggedIn) {
+          var cu = Auth.getCurrentUser();          
+          $scope.currentUserEmail = Auth.getCurrentUser().email;   
+          if($scope.currentUserEmail==$scope.game.gameCreator){
+            $scope.currentUserIsGameCreator=true;
+          }          
+        }
+      });
+    }
+    
+    $scope.bribes = [];
+    
+    $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
+      $scope.bribes = bribes;
+      socket.syncUpdates('bribe', $scope.bribes);
+    });
+
+    $scope.addBribe = function() {
+      if($scope.newBribe === '') {
+        return;
+      }
+      $http.post('/api/bribes', { name: $scope.newBribe });
+      $scope.newBribe = '';
+    };
+
+   $scope.saveBribe = function(bribe) {
+      $http.put('/api/bribes/'+bribe._id, bribe);      
+    };
+
+
+    $scope.deleteBribe = function(bribe) {
+      $http.delete('/api/bribes/' + bribe._id);
+    };
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('bribe');
+    });
 
     // $scope.changePassword = function(form) {
     //   $scope.submitted = true;
