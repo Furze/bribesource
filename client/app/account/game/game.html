@@ -16,11 +16,10 @@
       <h3 class="page-header">Competing Stories:</h3>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="outcome in outcomes">
         <li><a href="#" tooltip="{{outcome.info}}">{{outcome.name}}
-              <select id="outcomebribe" ng-model="outcome.bribe">
+              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)">
                   <option value="">---Please select---</option>
-                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>              
+                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>
               </select>
-          <a href="#" ng-click="saveOutcome(outcome)">save</a>
           <button type="button" class="close" ng-click="deleteOutcome(outcome)">&times;</button></a>
         </li>
       </ul>
