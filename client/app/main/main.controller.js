@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket,Auth) {
 
     $scope.games = [];
 
@@ -18,7 +18,16 @@ angular.module('storyApp')
       });
     }
 
+    $scope.checkLoggedIn = function() {
+      Auth.isLoggedInAsync(function(val) {
+        $scope.isLoggedIn = val;
+      });
+    }
+    $scope.checkLoggedIn();
+    
+
     $scope.addGame = function() {
+
       if($scope.newGame === '') {
         return;
       }
@@ -37,6 +46,7 @@ angular.module('storyApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('game');
     });
+
 
 
     $scope.awesomeThings = [];
