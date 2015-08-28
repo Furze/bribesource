@@ -20,18 +20,18 @@ angular.module('storyApp')
 
             var o = $scope.outcomes;
             for(var i=0;i<$scope.outcomes.length;i++){
-              var outcome = $scope.outcomes[i];              
+              var outcome = $scope.outcomes[i];
               outcome.bribevalue=1;
               var bribename ='Not assigned';
               for(var j=0;j<$scope.bribes.length;j++){
                 var bribe = $scope.bribes[j];
                 if(outcome.bribe==bribe._id){
                   if(bribe.value){
-                    outcome.bribevalue = bribe.value;  
+                    outcome.bribevalue = bribe.value;
                   }else{
-                    
+
                   }
-                  outcome.bribename = bribe.name;                  
+                  outcome.bribename = bribe.name;
                 }
               }
             }
@@ -65,9 +65,13 @@ angular.module('storyApp')
       $http.post('/api/decision/runDecisionSimulation',params).success(function(result){
           $scope.winner = result.results[0].name;
 
-          PieService.renderPie(labels,values,function(){            
+          PieService.renderPie(labels,values,function(){
             $scope.showWinner = true;
-            $scope.$apply();  
+            $scope.$apply();
+            $scope.game.winner = $scope.winner;
+            $http.put('/api/games/'+$scope.gameid, $scope.game).then(function(gameUpdateResult){
+              // TODO: sync ?
+            });
           });
           //need to save the game winner
       })
@@ -75,5 +79,5 @@ angular.module('storyApp')
 
 
 
-    
+
   });

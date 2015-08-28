@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var GameSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean
+  active: Boolean,
+  winner: String
 });
 
 module.exports = mongoose.model('Game', GameSchema);
