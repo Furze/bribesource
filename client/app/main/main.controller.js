@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket,Auth) {
 
     $scope.games = [];
 
@@ -18,11 +18,27 @@ angular.module('storyApp')
       });
     }
 
+    $scope.checkLoggedIn = function() {
+      Auth.isLoggedInAsync(function(val) {
+
+        $scope.isLoggedIn = val;
+        if($scope.isLoggedIn) {
+          var cu = Auth.getCurrentUser();
+          $scope.currentUserImageUrl = cu.google.image.url;
+          $scope.currentUserEmail = Auth.getCurrentUser().email;   
+          console.log($scope.currentUserEmail);
+        }
+      });
+    }
+    $scope.checkLoggedIn();
+    
+
     $scope.addGame = function() {
+
       if($scope.newGame === '') {
         return;
       }
-      $http.post('/api/games', { name: $scope.newGame }).then(function(){
+      $http.post('/api/games', { name: $scope.newGame, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(){
         $scope.getGames();
       })
       $scope.newGame = '';
@@ -37,6 +53,7 @@ angular.module('storyApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('game');
     });
+
 
 
     $scope.awesomeThings = [];
