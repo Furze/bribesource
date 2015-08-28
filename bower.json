@@ -16,6 +16,7 @@
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.10",
+    "colr": "~1.2.2",
     "raphael": "~2.1.4"
   },
   "devDependencies": {

@@ -8,11 +8,8 @@
   <!--       <button type="button" class="close" ng-click="play()">Play</button> -->
 
         <ul ng-repeat="outcome in outcomes">
-        <li>{{outcome.name}} {{outcome.bribename}} {{outcome.bribevalue}}</li>
+            <li ng-style="{ color: outcome.color.toHex() }">{{outcome.name}} {{outcome.bribename}} {{outcome.bribevalue}}</li>
         </ul>
-
-              
-
     </div>    
   </div>
 
