@@ -5,34 +5,35 @@
     <div class="col-sm-12">
       <h1>Game: {{game.name}}</h1>  
 
-        <button type="button" class="close" ng-click="play()">Play</button>
+  <!--       <button type="button" class="close" ng-click="play()">Play</button> -->
 
-        <div ng-show="showWinner">
-          The winner is: {{winner}}.
-        </div>        
+        <ul ng-repeat="outcome in outcomes">
+        <li>{{outcome.name}} {{outcome.bribename}} {{outcome.bribevalue}}</li>
+        </ul>
+
+              
 
     </div>    
   </div>
 
- <div class="container">  
   <div class="row">
     <div class="col-lg-12">
-      
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="outcome in outcomes">
-        <li>{{outcome.name}}
-              <select id="outcomebribe" ng-model="outcome.bribe">
-                  <option value="{{brige._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>              
-              </select>
-        </li>
-      </ul>
-
-
+        <div id="holder" style="display: block">        
+            <img id="arrow" src="assets/images/arrow.png" alt="arrow">
+        </div>
     </div>
   </div>
 
+  <div class="row">
+      <div class="col-lg-12">
 
-
-</div>
+         <div ng-show="showWinner" style="color: green">    
+                <h4>    
+                  The winner is: {{winner}}. <br/> Congratulations.          
+                </h4>
+          </div> 
+      </div>
+  </div>
 
 
 

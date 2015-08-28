@@ -8,6 +8,46 @@
   </div>
 </header>
 
+<header class="sell-unit" id="banner">
+  <div class="container">
+    <div class="row" ng-if="!showHowTo">
+      <div class="col-lg-12" style="align:center">
+        <a href="#"  ng-click="toggleHowTo()">
+          <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
+        </a>  
+      </div>
+    </div>
+    <div class="row" ng-if="showHowTo">    
+      <div class="col-lg-4" style="align:center">
+        <a href="#"  ng-click="toggleHowTo()">
+          <span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="col-lg-4">    
+        <p class="lead">If you are a Sprint Team Member</p>
+        <ul>
+          <li>Create a new sprint.</li>
+          <li>Define your bribes and their values</li>
+          <li>Add in your refactor stories</li>
+          <li>Define when the game will run.</li>
+        </ul>
+      </div>
+      <div class="col-lg-4">    
+        <p class="lead">If you are a Product Owner</p>
+        <ul>
+          <li>Select an active game.</li>
+          <li>Add in your sprint stories</li>
+          <li>Assign bribes</li>
+          <li>You will be emailed the result when the game wins</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- <img src="assets/images/yeoman.png" alt="I'm Yeoman"> -->
+  </div>
+</header>
+
+
 <div class="container">  
   <div class="row">
     <div class="col-lg-12">

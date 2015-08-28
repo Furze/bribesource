@@ -15,9 +15,10 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||            
-            'mongodb://bribe:bribe@ds051980.mongolab.com:51980/bribe'
+    uri: 'mongodb://bribe:bribe@ds051980.mongolab.com:51980/bribe'
+    // uri:    process.env.MONGOLAB_URI ||
+    //         process.env.MONGOHQ_URL ||
+    //         process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||            
+    //         'mongodb://bribe:bribe@ds051980.mongolab.com:51980/bribe'
   }
 };

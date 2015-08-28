@@ -32,4 +32,8 @@ morepork-website/node_modules/
 /quick-use-module/nbproject/private/
 
 node_modules
-
+bower_components/
+dist
+.tmp
+.sass-cache
+client/bower_components
