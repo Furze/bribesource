@@ -36,3 +36,4 @@ bower_components/
 dist
 .tmp
 .sass-cache
+client/bower_components

@@ -4,6 +4,12 @@ angular.module('storyApp')
   .controller('MainCtrl', function ($scope, $http, socket) {
 
     $scope.games = [];
+
+    $scope.showHowTo=false;
+
+    $scope.toggleHowTo=function(){
+      $scope.showHowTo= !$scope.showHowTo;
+    }
     
     $scope.getGames = function() {
       $http.get('/api/games').success(function(games) {
