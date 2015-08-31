@@ -42,8 +42,10 @@ var all = {
   },
   
   google: {
-    clientID:     process.env.GOOGLE_ID || '420908109166-hnm731k9t76gmkjg6u6o9cjtgf2ce0hd.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'xK6IMmJ_qAxKTN2A9jPTx3N5',
+    clientID:     process.env.GOOGLE_ID || '444090684595-n4po5b8mv86mqjmg0i8onb2pkdctjdvi.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'R0oFAJNNcwgzw0GLm44o5l1J',
+    //clientID:     process.env.GOOGLE_ID || '420908109166-hnm731k9t76gmkjg6u6o9cjtgf2ce0hd.apps.googleusercontent.com',
+    //clientSecret: process.env.GOOGLE_SECRET || 'xK6IMmJ_qAxKTN2A9jPTx3N5',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'
   }
 };
