@@ -15,32 +15,34 @@
 
 
    <div class="container" ng-if="!game.winner && currentUserIsGameCreator">
-  <div class="row">
-    <div class="col-lg-12">
-      <h2 class="page-header">Available Bribes:</h2>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
-        <li>
-          <div class="col-xs-6">{{bribe.name}}</div>
-          <div class="col-xs-2">
-          <select ng-model="bribe.value" ng-change="saveBribe(bribe)" clas="col-xs-2">
-            <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
-          </select>
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="page-header">Available Bribes:</h2>
+        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
+          <li>
+            <div class="col-xs-6">{{bribe.name}}</div>
+            <div class="col-xs-2">
+            <select ng-model="bribe.value" ng-change="saveBribe(bribe)" clas="col-xs-2">
+              <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
+            </select>
+              </div>
+            <div>
+          <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
             </div>
-          <div>
-        <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
-          </div>
-        </li>
-      </ul>
-    </div>
+          </li>
+        </ul>      
 
-    <form class="bribe-form">
-      <p class="input-group">
-        <input type="text" class="form-control" placeholder="Add a new bribe here." ng-model="newBribe.value"></input>
-        <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
-        </span>
-      </p>
-    </form>
+        <form class="bribe-form">
+          <p class="input-group">
+            <input type="text" class="form-control" placeholder="Add a new bribe here." 
+             ng-model="newBribe.value"/>
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
+            </span>
+          </p>
+        </form>
+    </div>
+  </div>
   </div>
 
    <div class="container" > 
@@ -49,7 +51,7 @@
         <h2 class="page-header">Invitations <button type="button" class="close" ng-click="sendInvitations()">Send Invitations</button></h2>
         <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="invite in game.invitations">
           <li>
-          {{invite.email}}  <button type="button" class="close" ng-click="deleteInvite(invite)">&times;</button>
+          {{invite.email}} <span  class="label label-info" ng-if="invite.sent">Invitation Sent</span>  <button type="button" class="close" ng-click="deleteInvite(invite)">&times;</button>
           </li>
         </ul>
       </div>

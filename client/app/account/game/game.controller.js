@@ -126,6 +126,9 @@ angular.module('storyApp')
 
     $scope.sendInvitations = function() {
       for(var i=0;i<$scope.game.invitations.length;i++){
+        var i = $scope.game.invitations[i];
+        i.sent=true;
+         $http.put('/api/games/'+$scope.game._id, $scope.game);   
       }
     };
 
