@@ -23,7 +23,7 @@
           <div class="col-xs-6">{{bribe.name}}</div>
           <div class="col-xs-2">
           <select ng-model="bribe.value" ng-change="saveBribe(bribe)" clas="col-xs-2">
-            <option value="{{n}}" ng-repeat="n in range(1,100)">{{n}}</option>
+            <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
           </select>
             </div>
           <div>
@@ -46,12 +46,10 @@
    <div class="container" > 
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="page-header">Invitations:</h2>
-        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="invite in invitations">
+        <h2 class="page-header">Invitations <button type="button" class="close" ng-click="sendInvitations()">Send Invitations</button></h2>
+        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="invite in game.invitations">
           <li>
-          {{invite.name}} 
-          <input type="text" class="form-control" placeholder="Bribe Value" ng-model="invite.value" ng-change="saveInvite(invite)">
-          <button type="button" class="close" ng-click="deleteInvite(invite)">&times;</button>
+          {{invite.email}} {{invite.sent? 'Invited'}}  <button type="button" class="close" ng-click="deleteInvite(invite)">&times;</button>
           </li>
         </ul>
       </div>
@@ -59,9 +57,9 @@
 
     <form class="bribe-form">
       <p class="input-group">
-        <input type="text" class="form-control" placeholder="Invite a product owner." ng-model="newInvite.value"></input>
+        <input type="text" class="form-control" placeholder="email address" ng-model="newInvite.value"></input>
         <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary" ng-click="addBribe()">Invite a product owner to this game</button>
+          <button type="submit" class="btn btn-primary" ng-click="addInvite()">Invite a product owner to this game</button>
         </span>
       </p>
     </form>
@@ -88,7 +86,7 @@
   <form ng-disabled="game.winner" class="thing-form">
     <label>Add a new story</label>
     <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new outcome here." ng-model="newOutcome">
+      <input type="text" class="form-control" placeholder="Add a new outcome here." ng-model="newOutcome.value">
       <span class="input-group-btn">
         <button type="submit" class="btn btn-primary" ng-disabled="game.winner" ng-click="addOutcome()">Add New Story</button>
       </span>

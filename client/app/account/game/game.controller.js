@@ -5,6 +5,9 @@ angular.module('storyApp')
     $scope.errors = {};
 
     $scope.newBribe={value:''};
+    $scope.newInvite={value: ''};
+    $scope.newOutcome={value: ''};
+
     $scope.gameid = $stateParams.id
 
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
@@ -16,7 +19,7 @@ angular.module('storyApp')
         $scope.bribes = c;
       });
 
-     $scope.outcomes = [];
+    $scope.outcomes = [];
     
     $scope.getOutcomes = function() {
       $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
@@ -26,11 +29,11 @@ angular.module('storyApp')
     }
 
     $scope.addOutcome = function() {
-      if($scope.newOutcome === '') {
+      if($scope.newOutcome.value === '') {
         return;
       }
-      $http.post('/api/outcomes', { name: $scope.newOutcome, game: $scope.gameid });
-      $scope.newOutcome = '';
+      $http.post('/api/outcomes', { name: $scope.newOutcome.value, game: $scope.gameid });
+      $scope.newOutcome.value = '';
       $scope.getOutcomes();
     };
 
@@ -74,8 +77,7 @@ angular.module('storyApp')
     });
     }
     
-    
-
+  
     $scope.addBribe = function() {
       if($scope.newBribe.value == '') {
         return;
@@ -109,18 +111,31 @@ angular.module('storyApp')
         };
 
     $scope.getBribes();
-    // $scope.changePassword = function(form) {
-    //   $scope.submitted = true;
-    //   if(form.$valid) {
-    //     Auth.changePassword( $scope.user.oldPassword, $scope.user.newPassword )
-    //     .then( function() {
-    //       $scope.message = 'Password successfully changed.';
-    //     })
-    //     .catch( function() {
-    //       form.password.$setValidity('mongoose', false);
-    //       $scope.errors.other = 'Incorrect password';
-    //       $scope.message = '';
-    //     });
-    //   }
-		// };
+
+
+    $scope.invitations = [];
+    
+    $scope.addInvite = function() {
+        if($scope.newInvite.value == '') {
+          return;
+        }
+        $scope.game.invitations.push({email: $scope.newInvite.value});     
+        $scope.newInvite.value = '';   
+        $http.put('/api/games/'+$scope.game._id, $scope.game);        
+    };
+
+    $scope.sendInvitations = function() {
+      for(var i=0;i<$scope.game.invitations.length;i++){
+      }
+    };
+
+    $scope.deleteInvite = function(invite) {
+      for(var i=0;i<$scope.game.invitations.length;i++){
+        var i = $scope.game.invitations[i];
+        if(i.email.valueOf()===invite.email.valueOf()){
+          $scope.game.invitations.splice(i,1);
+        }
+      }
+    };
+
   });

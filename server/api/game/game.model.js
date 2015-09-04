@@ -11,7 +11,8 @@ var GameSchema = new Schema({
   gameCreator: String,
   gameCreatorImageUrl: String,
   invitations: [{
-  	email: String
+  	email: String,
+  	sent: Boolean
   }]
 });
 
