@@ -65,39 +65,30 @@ angular.module('storyApp')
         }, 0);
 
         // calculate number of slices each item gets
-        var itemSlices = [];
-        items.forEach(function (item, id) {
+        var sectors = 0;
+        items.forEach(function (item) {
+            // TODO: ensure that every item gets at least one sector
             var count = Math.round(item.weight / total * SECTOR_ESTIMATE);
 
-            item.slices = [];
-
-            for (var i = 0; i < count; i++) {
-                itemSlices.push({
-                    id: id,
-                    label: item.name,
-                    color: item.color,
-                });
+            if (count === 0) {
+                count = 1;
             }
+
+            item.count = count;
+            sectors += count;
         });
 
-        // TODO: ensure that every item gets at least one sector
-
-        // TODO: could we shuffle slices in a way that minimises the amount of sectors
-        // that are the same color being next to each other?
-
-        // shuffle slices
-        // itemSlices.sort(utils.shuffle);
-
-        var sectors     = itemSlices.length;
         var sectorWidth = 360 / sectors;
-        var index = 0;
 
         // draws a section of the pie chart for an item
+        var index = 0;
         var process = function (item) {
             var angle = sectorWidth * index;
+            var endAngle = angle + (sectorWidth * item.count);
+            index += item.count;
 
             // section
-            var p = paper.sector(cx, cy, r, angle, angle + sectorWidth).attr({
+            var p = paper.sector(cx, cy, r, angle, endAngle).attr({
                 fill: '90-' + item.color.toHex() + '-' + item.color.clone().darken(10).toHex(),
                 stroke: stroke,
                 'stroke-width': 2,
@@ -125,14 +116,13 @@ angular.module('storyApp')
             chart.push(txt);
             */
 
-            index += 1;
             return p;
         };
 
         // draw all the slices
-        var slices = itemSlices.reduce(function (result, item, index) {
+        var slices = items.reduce(function (result, item, index) {
             result.push(process(item));
-            items[item.id].slices.push(index);
+            item.slice = index;
             return result;
         }, this.set());
 
@@ -159,7 +149,7 @@ angular.module('storyApp')
         chart.spin = function (winner, done) {
 
             // find index of winner
-            var slice = slices[utils.randIndex(items[winner].slices)];
+            var slice = slices[items[winner].slice];
 
             // pad start and end values so that pointer doesn't stop on a join
             var padding = 2;
