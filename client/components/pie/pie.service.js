@@ -86,7 +86,7 @@ angular.module('storyApp')
         // that are the same color being next to each other?
 
         // shuffle slices
-        itemSlices.sort(utils.shuffle);
+        // itemSlices.sort(utils.shuffle);
 
         var sectors     = itemSlices.length;
         var sectorWidth = 360 / sectors;
