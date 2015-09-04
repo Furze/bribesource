@@ -106,13 +106,13 @@ angular.module('storyApp')
             var sector = paper.sector(cx, cy, r, angle, endAngle).attr({
                 fill: '90-' + item.color.toHex() + '-' + item.color.clone().darken(10).toHex(),
                 stroke: stroke,
-                'stroke-width': 3,
+                'stroke-width': 2,
             });
             elements.push(sector);
 
-            for (var i = 1; i <= item.count; i++) {
+            for (var i = 1; i < item.count; i++) {
                 elements.push(paper.sector(cx, cy, r, angle + (sectorWidth * i)).attr({
-                    stroke: stroke,
+                    stroke: item.color.clone().lighten(10).toHex(),
                     'stroke-width': 1,
                 }));
             }
@@ -146,18 +146,6 @@ angular.module('storyApp')
             });
             return result;
         }, this.set());
-
-        // mid circle
-        chart.push(paper.circle(cx, cy, r/5).attr({
-            stroke: stroke,
-            'stroke-width': 2,
-        }));
-
-        // outer circle
-        chart.push(paper.circle(cx, cy, r).attr({
-            stroke: stroke,
-            'stroke-width': 4,
-        }));
 
         // center
         chart.push(paper.circle(cx, cy, r/16).attr({
