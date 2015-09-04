@@ -9,7 +9,10 @@ var GameSchema = new Schema({
   active: Boolean,
   winner: String,
   gameCreator: String,
-  gameCreatorImageUrl: String
+  gameCreatorImageUrl: String,
+  invitations: [{
+  	email: String
+  }]
 });
 
 module.exports = mongoose.model('Game', GameSchema);
