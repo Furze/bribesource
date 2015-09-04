@@ -100,6 +100,14 @@ angular.module('storyApp')
       socket.unsyncUpdates('bribe');
     });
 
+        $scope.range = function(min, max) {
+            var a = [];
+            for(var i = min; i <= max; i++) {
+                a[i] = i;
+            }
+            return a;
+        };
+
     $scope.getBribes();
     // $scope.changePassword = function(form) {
     //   $scope.submitted = true;

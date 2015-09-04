@@ -20,9 +20,15 @@
       <h2 class="page-header">Available Bribes:</h2>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
         <li>
-        {{bribe.name}} 
-        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value" ng-change="saveBribe(bribe)">
+          <div class="col-xs-6">{{bribe.name}}</div>
+          <div class="col-xs-2">
+          <select ng-model="bribe.value" ng-change="saveBribe(bribe)" clas="col-xs-2">
+            <option value="{{n}}" ng-repeat="n in range(1,100)">{{n}}</option>
+          </select>
+            </div>
+          <div>
         <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
+          </div>
         </li>
       </ul>
     </div>
