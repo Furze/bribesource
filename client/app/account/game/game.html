@@ -67,7 +67,25 @@
     </form>
   </div>
 
+<div class="container"> 
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">Schedule Time</h2>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-4 col-sm-6">
+            <form class="bribe-form">
+                <input type="datetime-local" class="form-control" ng-model="outcome.time" ng-change="saveOutcome(outcome)">
+            </form>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <h4>{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
+        </div>
+    </div>
+</div>
 
  <div ng-disabled="game.winner" class="container">
   <div class="row">

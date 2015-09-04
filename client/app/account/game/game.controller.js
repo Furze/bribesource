@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService) {
 
 
         var COLORS = ['9CE0B1', 'B9EC47', 'F7B15E', 'FB2FC8', '907A9D'].map(colr.fromHex);
+  .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService, $interval) {
 
     $scope.errors = {};
+    $scope.time = {
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+    };
 
     $scope.newBribe={value:''};
     $scope.newInvite={value: ''};
@@ -49,9 +54,34 @@ angular.module('storyApp')
     };
 
    $scope.saveOutcome = function(outcome) {
+       $scope.renderTime(outcome);
+
       $http.put('/api/outcomes/'+outcome._id, outcome).then(function(){
         $scope.getOutcomes();
       })     
+    };
+
+    var format = function (n) {
+        if (n < 0) { n += 1; }
+        return Math.floor(n).toString();
+    };
+
+    var clockInterval = null;
+    $scope.renderTime = function (outcome) {
+        if (clockInterval !== null) {
+            $interval.cancel(clockInterval);
+        }
+
+        clockInterval = $interval(function () {
+            var time = 0;
+            if (typeof outcome.time !== 'undefined') {
+                time = (outcome.time - Date.now()) / 1000;
+            }
+            $scope.time.days    = format(time / 60 / 60 / 24);
+            $scope.time.hours   = format((time / 60 / 60) % 24);
+            $scope.time.minutes = format((time / 60) % 60);
+            $scope.time.seconds = format(time % 60);
+        }, 1000);
     };
 
     $scope.$on('$destroy', function () {
