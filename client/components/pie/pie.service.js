@@ -174,10 +174,12 @@ angular.module('storyApp')
     };
 
     return {
-        render: function(elementID, items, winner, done) {
+        //render: function(elementID, items, winner, done) {
+        render: function(elementID, items) {
             var raphael = new Raphael(elementID, 700, 700);
             var pieChart = raphael.pieChart(350, 350, 200, items, '#fff');
-            pieChart.spin(winner, done);
+            //pieChart.spin(winner, done);
+            return pieChart;
         }
     }; 
 });

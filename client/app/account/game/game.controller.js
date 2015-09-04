@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket) {
+  .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService) {
+
+
+        var COLORS = ['9CE0B1', 'B9EC47', 'F7B15E', 'FB2FC8', '907A9D'].map(colr.fromHex);
+
     $scope.errors = {};
 
     $scope.newBribe={value:''};
@@ -25,6 +29,7 @@ angular.module('storyApp')
       $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
       $scope.outcomes = outcomes;
       socket.syncUpdates('outcome', $scope.outcomes);
+      $scope.play();
     });
     }
 
@@ -140,5 +145,36 @@ angular.module('storyApp')
         }
       }
     };
+
+
+        $scope.play = function() {
+
+            var params = {};
+            var items = [];
+
+            for(var i=0;i<$scope.outcomes.length;i++){
+                var outcome = $scope.outcomes[i];
+                var bribeValue = 0;
+                for (var j=0; j < $scope.bribes.length; j++) {
+                    if ($scope.bribes[j]._id === outcome.bribe) {
+                        bribeValue = $scope.bribes[j].value;
+                    }
+                }
+                var item = {
+                    name: outcome.name,
+                    weight: bribeValue,
+                    color: COLORS[i % COLORS.length],
+                };
+                items.push(item);
+
+                console.log(items);
+                console.log(outcome);
+            }
+            params.items = items;
+
+
+
+            PieService.render('holder', items);
+        }
 
   });

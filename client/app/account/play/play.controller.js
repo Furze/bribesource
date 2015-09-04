@@ -73,7 +73,9 @@ angular.module('storyApp')
               }
           }
 
-          PieService.render('holder', items, winPos, function (){ 
+          var pieChart = PieService.render('holder', items);
+
+          pieChart.spin(winPos, function (){
             $scope.showWinner = true;
             $scope.$apply();
             $scope.game.winner = $scope.winner;
