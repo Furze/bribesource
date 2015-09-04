@@ -1,9 +1,6 @@
 'use strict';
 
 angular.module('storyApp')
-
-
-        var COLORS = ['9CE0B1', 'B9EC47', 'F7B15E', 'FB2FC8', '907A9D'].map(colr.fromHex);
   .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService, $interval) {
 
     $scope.errors = {};
@@ -193,16 +190,12 @@ angular.module('storyApp')
                 var item = {
                     name: outcome.name,
                     weight: bribeValue,
-                    color: COLORS[i % COLORS.length],
+                    color: PieService.colors[i % PieService.colors.length],
                 };
                 items.push(item);
-
-                console.log(items);
-                console.log(outcome);
             }
+
             params.items = items;
-
-
 
             PieService.render('holder', items);
         }

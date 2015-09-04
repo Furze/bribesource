@@ -3,8 +3,6 @@
 angular.module('storyApp')
   .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService) {
 
-    var COLORS = ['9CE0B1', 'B9EC47', 'F7B15E', 'FB2FC8', '907A9D'].map(colr.fromHex);
-
     $scope.errors = {};
     $scope.gameid = $stateParams.id
 
@@ -23,7 +21,7 @@ angular.module('storyApp')
             var o = $scope.outcomes;
             for(var i=0;i<$scope.outcomes.length;i++){
               var outcome = $scope.outcomes[i];
-              outcome.color = COLORS[i % COLORS.length];
+              outcome.color = PieService.colors[i % PieService.colors.length];
               outcome.bribevalue=1;
               var bribename ='Not assigned';
               for(var j=0;j<$scope.bribes.length;j++){

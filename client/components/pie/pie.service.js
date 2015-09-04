@@ -31,7 +31,7 @@ angular.module('storyApp')
     };
 
     // constants
-    var SECTOR_ESTIMATE = 12;
+    var SECTOR_ESTIMATE = 16;
     var RAD             = Math.PI / 180;
 
     // draws a sector of a circle
@@ -53,10 +53,22 @@ angular.module('storyApp')
         ]);
     };
 
+    Raphael.fn.sectorLine = function (cx, cy, r, angle) {
+        var x1 = cx + r * Math.cos(-angle * RAD);
+        var y1 = cy + r * Math.sin(-angle * RAD);
+
+        return this.path([
+            // move to
+            'M', cx, cy,
+            // line to
+            'L', x1, y1,
+        ]);
+    }
+
     // draws a pie chart
     Raphael.fn.pieChart = function (cx, cy, r, items, stroke) {
-
         var paper = this;
+        var elements = [];
         var chart = paper.set();
 
         // calculate total weight
@@ -87,15 +99,23 @@ angular.module('storyApp')
             var endAngle = angle + (sectorWidth * item.count);
             index += item.count;
 
+            item.startAngle = angle;
+            item.endAngle = endAngle
+
             // section
-            var p = paper.sector(cx, cy, r, angle, endAngle).attr({
+            var sector = paper.sector(cx, cy, r, angle, endAngle).attr({
                 fill: '90-' + item.color.toHex() + '-' + item.color.clone().darken(10).toHex(),
                 stroke: stroke,
-                'stroke-width': 2,
+                'stroke-width': 3,
             });
-            p.startAngle = angle;
-            p.endAngle = angle + sectorWidth;
-            chart.push(p);
+            elements.push(sector);
+
+            for (var i = 1; i <= item.count; i++) {
+                elements.push(paper.sector(cx, cy, r, angle + (sectorWidth * i)).attr({
+                    stroke: stroke,
+                    'stroke-width': 1,
+                }));
+            }
 
             /*
             // labels
@@ -116,13 +136,14 @@ angular.module('storyApp')
             chart.push(txt);
             */
 
-            return p;
+            return elements;
         };
 
         // draw all the slices
-        var slices = items.reduce(function (result, item, index) {
-            result.push(process(item));
-            item.slice = index;
+        var pie = items.reduce(function (result, item, index) {
+            process(item).forEach(function (element) {
+                result.push(element);
+            });
             return result;
         }, this.set());
 
@@ -149,7 +170,7 @@ angular.module('storyApp')
         chart.spin = function (winner, done) {
 
             // find index of winner
-            var slice = slices[items[winner].slice];
+            var slice = items[winner];
 
             // pad start and end values so that pointer doesn't stop on a join
             var padding = 2;
@@ -163,7 +184,7 @@ angular.module('storyApp')
 
             var animationTime = 10 * 1000;
 
-            slices.animate({
+            pie.animate({
                 transform:'r-' + spin + ',350,350',
             }, animationTime, 'cubic-bezier(0.2, 0, 0, 1)');
 
@@ -174,12 +195,17 @@ angular.module('storyApp')
     };
 
     return {
-        //render: function(elementID, items, winner, done) {
+        colors: [
+            '9CE0B1',
+            'B9EC47',
+            'F7B15E',
+            'FB2FC8',
+            '907A9D'
+        ].map(colr.fromHex),
         render: function(elementID, items) {
             var raphael = new Raphael(elementID, 700, 700);
             var pieChart = raphael.pieChart(350, 350, 200, items, '#fff');
-            //pieChart.spin(winner, done);
             return pieChart;
-        }
+        },
     }; 
 });
