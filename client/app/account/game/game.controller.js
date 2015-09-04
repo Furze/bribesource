@@ -4,6 +4,7 @@ angular.module('storyApp')
   .controller('GameCtrl', function ($scope, User, Auth, $stateParams , $http , socket) {
     $scope.errors = {};
 
+    $scope.newBribe={value:''};
     $scope.gameid = $stateParams.id
 
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
@@ -18,7 +19,7 @@ angular.module('storyApp')
      $scope.outcomes = [];
     
     $scope.getOutcomes = function() {
-       $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
+      $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
       $scope.outcomes = outcomes;
       socket.syncUpdates('outcome', $scope.outcomes);
     });
@@ -65,33 +66,41 @@ angular.module('storyApp')
     }
     
     $scope.bribes = [];
-    
-    $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
+
+    $scope.getBribes = function() {
+      $http.get('/api/bribes?game='+$scope.gameid).success(function(bribes) {
       $scope.bribes = bribes;
       socket.syncUpdates('bribe', $scope.bribes);
     });
+    }
+    
+    
 
     $scope.addBribe = function() {
-      if($scope.newBribe === '') {
+      if($scope.newBribe.value == '') {
         return;
       }
-      $http.post('/api/bribes', { name: $scope.newBribe });
-      $scope.newBribe = '';
+      $http.post('/api/bribes', { name: $scope.newBribe.value, game: $scope.gameid }).success(function(){
+        $scope.getBribes();
+        $scope.newBribe.value = '';
+      })      
     };
 
    $scope.saveBribe = function(bribe) {
       $http.put('/api/bribes/'+bribe._id, bribe);      
     };
 
-
     $scope.deleteBribe = function(bribe) {
-      $http.delete('/api/bribes/' + bribe._id);
+      $http.delete('/api/bribes/' + bribe._id).success(function(){
+        $scope.getBribes();
+      })
     };
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('bribe');
     });
 
+    $scope.getBribes();
     // $scope.changePassword = function(form) {
     //   $scope.submitted = true;
     //   if(form.$valid) {

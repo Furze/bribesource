@@ -5,8 +5,6 @@
     <div class="col-sm-12">
       <h1>Game: {{game.name}}</h1>
       <label>Game Creator/Owner</label> {{game.gameCreator}}
-
-
       <p/>
       <a ng-hide="game.winner" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a>
 
@@ -22,17 +20,17 @@
       <h2 class="page-header">Available Bribes:</h2>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
         <li>
-        {{bribe.name}} <a href="#" ng-click="saveBribe(bribe)" tooltip="{{bribe.info}}">save</a>
-        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value">
+        {{bribe.name}} 
+        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value" ng-change="saveBribe(bribe)">
         <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
         </li>
       </ul>
     </div>
   </div>
 
-  <form class="thing-form">
+  <form class="bribe-form">
     <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new bribe here." ng-model="newBribe">
+      <input type="text" class="form-control" placeholder="Add a new bribe here." ng-model="newBribe.value"></input>
       <span class="input-group-btn">
         <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
       </span>
