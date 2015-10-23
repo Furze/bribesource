@@ -18,6 +18,7 @@ angular.module('storyApp')
 
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
         $scope.game = c;
+        $scope.game.gamePlayDate = new Date($scope.game.gamePlayDate);
         $scope.checkGameCreator();
       });
 
@@ -153,14 +154,14 @@ angular.module('storyApp')
         }
         $scope.game.invitations.push({email: $scope.newInvite.value});     
         $scope.newInvite.value = '';   
-        $http.put('/api/games/'+$scope.game._id, $scope.game);        
+        $scope.saveGame($scope.game);        
     };
 
     $scope.sendInvitations = function() {
       for(var i=0;i<$scope.game.invitations.length;i++){
         var i = $scope.game.invitations[i];
         i.sent=true;
-         $http.put('/api/games/'+$scope.game._id, $scope.game);   
+        $scope.saveGame($scope.game);         
       }
     };
 
@@ -170,10 +171,16 @@ angular.module('storyApp')
         if(i.email.valueOf()===invite.email.valueOf()){
           $scope.game.invitations.splice(i,1);
         }
+        $scope.saveGame($scope.game);
       }
     };
 
 
+    $scope.saveGame = function(game) {      
+      $http.put('/api/games/'+game._id, game).then(function(response){        
+        $scope.game = response.data;
+      });
+    };
         $scope.play = function() {
 
             var params = {};
