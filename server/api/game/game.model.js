@@ -10,6 +10,7 @@ var GameSchema = new Schema({
   winner: String,
   gameCreator: String,
   gameCreatorImageUrl: String,
+  gamePlayDate: Date,
   invitations: [{
   	email: String,
   	sent: Boolean

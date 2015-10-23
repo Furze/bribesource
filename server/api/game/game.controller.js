@@ -20,6 +20,7 @@ exports.index = function(req, res) {
   });
 };
 
+
 // Get a single game
 exports.show = function(req, res) {
   Game.findById(req.params.id, function (err, game) {

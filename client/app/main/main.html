@@ -39,6 +39,18 @@
 
   <div class="container">  
     <div class="row">
+        <form class="thing-form">
+        <p class="input-group">
+          <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame"/>
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary" ng-disabled="!isLoggedIn" ng-click="addGame()">Add New Game</button>
+          </span>
+        </p>
+        <span ng-if="!isLoggedIn" class="label label-warning">Log in to add a new game</span>  
+      </form>
+    </div>
+
+    <div class="row">
       <div class="col-sm-6 col-md-4" ng-repeat="game in games">
           <div class="thumbnail">
             <img src="{{game.gameCreatorImageUrl}}" >
@@ -52,16 +64,6 @@
       </div>
     </div>
   
-  <form class="thing-form">
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame"/>
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-disabled="!isLoggedIn" ng-click="addGame()">Add New Game</button>
-      </span>
-    </p>
-    <span ng-if="!isLoggedIn" class="label label-warning">Log in to add a new game</span>  
-  </form>
-</div>
 
 
 
