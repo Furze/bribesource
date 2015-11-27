@@ -32,7 +32,7 @@ angular.module('storyApp')
       $http.get('/api/outcomes?game='+$scope.gameid).success(function(outcomes) {
       $scope.outcomes = outcomes;
       socket.syncUpdates('outcome', $scope.outcomes);
-      $scope.play();
+      //$scope.play();
     });
     }
 
@@ -160,8 +160,10 @@ angular.module('storyApp')
     $scope.sendInvitations = function() {
       for(var i=0;i<$scope.game.invitations.length;i++){
         var i = $scope.game.invitations[i];
-        i.sent=true;
-        $scope.saveGame($scope.game);         
+        i.sent=true;        
+        $http.put('/api/games/'+$scope.game._id+'/invite', $scope.game).then(function(response){        
+          $scope.game = response.data;
+        });       
       }
     };
 
