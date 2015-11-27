@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('MainCtrl', function ($scope, $http, socket,Auth) {
+  .controller('MainCtrl', function ($scope, $http, $location, socket,Auth) {
 
     $scope.games = [];
 
@@ -38,8 +38,8 @@ angular.module('storyApp')
       if($scope.newGame === '') {
         return;
       }
-      $http.post('/api/games', { name: $scope.newGame, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(){
-        $scope.getGames();
+      $http.post('/api/games', { name: $scope.newGame, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(obj){
+        $location.path('game/' + obj.data._id)
       })
       $scope.newGame = '';
     };
