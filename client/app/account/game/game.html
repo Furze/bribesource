@@ -12,6 +12,26 @@
     </div>
   </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Schedule Time</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <form class="bribe-form">
+                    <input type="datetime-local" class="form-control" ng-model="game.gamePlayDate" ng-change="saveGame(game)">
+                </form>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <h4>{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
+            </div>
+        </div>
+    </div>
+
    <div class="container" ng-if="!game.winner && currentUserIsGameCreator">
     <div class="row">
       <div class="col-lg-12">
@@ -66,25 +86,15 @@
     </form>
   </div>
 
-<div class="container"> 
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="page-header">Schedule Time</h2>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 col-sm-6">
-            <form class="bribe-form">
-                <input type="datetime-local" class="form-control" ng-model="game.gamePlayDate" ng-change="saveGame(game)">
-            </form>
-        </div>
-
-        <div class="col-md-4 col-sm-6">
-            <h4>{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
-        </div>
-    </div>
-</div>
+    <form ng-disabled="game.winner" class="thing-form">
+        <label>Add a new story</label>
+        <p class="input-group">
+            <input type="text" class="form-control" placeholder="Add a new story here." ng-model="newOutcome.value">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary" ng-disabled="game.winner" ng-click="addOutcome()">Add New Story</button>
+      </span>
+        </p>
+    </form>
 
  <div ng-disabled="game.winner" class="container">
   <div class="row">
@@ -104,17 +114,6 @@
       <div id="holder" style="display: block; position:relative !important;"></div>
     </div> -->
   </div>
-
-  <form ng-disabled="game.winner" class="thing-form">
-    <label>Add a new story</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new outcome here." ng-model="newOutcome.value">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-disabled="game.winner" ng-click="addOutcome()">Add New Story</button>
-      </span>
-    </p>
-  </form>
-
 
 </div>
 
