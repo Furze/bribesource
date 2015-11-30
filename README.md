@@ -1,4 +1,4 @@
-# bribesource
+# Pimp my story
 
 deploy to openshift with 'grunt buildcontrol:openshift'
 
