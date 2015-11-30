@@ -22,10 +22,6 @@ angular.module('storyApp')
         $scope.checkGameCreator();
       });
 
-    $http.get('/api/bribes').success(function(c) {
-        $scope.bribes = c;
-      });
-
     $scope.outcomes = [];
     
     $scope.getOutcomes = function() {
