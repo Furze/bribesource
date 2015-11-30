@@ -5,7 +5,6 @@ deploy to openshift with 'grunt buildcontrol:openshift'
 
 ## Automatic email sending
 - Phil
-- Herado
 
 ## Frontend redesign / UI
 - Shawn
@@ -14,6 +13,9 @@ deploy to openshift with 'grunt buildcontrol:openshift'
 ## Scheduling
 - Abizer
 - Jason
+
+## Game Controller Logic
+- Gerardo
 
 ## PEOPLE WHO NEED JOBS (?)
 - Rowan

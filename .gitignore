@@ -37,3 +37,5 @@ dist
 .tmp
 .sass-cache
 client/bower_components
+bower_components/
+
