@@ -6,7 +6,7 @@
       <h1>Game: {{game.name}}</h1>
       <label>Game Creator/Owner</label> {{game.gameCreator}}
       <p/>
-      <a ng-hide="game.winner" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a>
+      <a ng-hide="game.winner || !currentUserIsGameCreator" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a>
 
       <h3 ng-hide="!game.winner" style="color: green">Winner was: {{game.winner}}</h3>
     </div>
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <form class="bribe-form">
-                    <input type="datetime-local" class="form-control" ng-model="game.gamePlayDate" ng-change="saveGame(game)">
+                    <input ng-disabled="!currentUserIsGameCreator" type="datetime-local" class="form-control" ng-model="game.gamePlayDate" ng-change="saveGame(game)">
                 </form>
             </div>
 
