@@ -1,98 +1,93 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>Pimp my story</h1>
-    <p class="lead">bribe your developers to work on your story rather than refactoring. </p>
-    <a href="#"  ng-click="toggleHowTo()"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+<div class="container">
+	<div class="jumbotron">
+		<div class="row">
+			<div class="col-lg-12">
+					<div class="text-center">
+				    <h1>Pimp my story</h1>
+				    <p class="lead">bribe your developers to work on your story rather than refactoring. </p>
+				    <a href="#" ng-click="toggleHowTo()"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+					</div>
+			</div>
+		</div>
+	  <div class="row sell-unit" id="howto" ng-if="showHowTo">
+	    <div class="col-lg-6">
+	      <p class="lead">If you are a Sprint Team Member</p>
+	      <ul>
+	        <li>Create a new sprint.</li>
+	        <li>Define your bribes and their values</li>
+	        <li>Add in your refactor stories</li>
+	        <li>Define when the game will run.</li>
+	      </ul>
+	    </div>
+	    <div class="col-lg-6">
+	      <p class="lead">If you are a Product Owner</p>
+	      <ul>
+	        <li>Select an active game.</li>
+	        <li>Add in your sprint stories</li>
+	        <li>Assign bribes</li>
+	        <li>You will be emailed the result when the game wins</li>
+	      </ul>
+	    </div>
+	  </div>
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<form>
+				  <div class="input-group">
+				    <input type="text" id="searchInput" class="form-control" placeholder="Search for game" ng-model="search" />
+	          <span class="input-group-btn">
+	            <button type="submit" class="btn btn-primary" ng-click="search()">Search</button>
+	          </span>
+				  </div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<br/>
+				<a href="/login" class="btn btn-primary btn-block" ng-if="!isLoggedIn">Login to add new game</a>
+				
+	      <form class="thing-form" ng-if="isLoggedIn">
+	        <div class="input-group">
+	          <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame.name" />
+	          <span class="input-group-btn">
+	            <button type="submit" class="btn btn-primary" ng-click="addGame()">Add New Game</button>
+	          </span>
+	        </div>
+	      </form>
+				
+			</div>
+		</div>
+	
+		<div class="row text-center">
+			<div class="col-lg-6 col-lg-offset-3">
+				<br/>
+			  <div class="form-group">
+	        <label for="completedGames">Show completed games</label>
+		      <div class="checkbox">
+		        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames">
+		      </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+  <div class="row" ng-if="gamesLoaded">
+	    <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-if="!game.winner || (game.winner && showCompletedGames)" >
+      <div class="thumbnail">
+        <img src="{{game.gameCreatorImageUrl}}" />
 
-    <!-- <img src="assets/images/yeoman.png" alt="I'm Yeoman"> -->
-  </div>
-</header>
-
-<header class="sell-unit" id="howto" ng-if="showHowTo">
-  <div class="container" >    
-    <div class="row" >    
-      <div class="col-lg-6">    
-        <p class="lead">If you are a Sprint Team Member</p>
-        <ul>
-          <li>Create a new sprint.</li>
-          <li>Define your bribes and their values</li>
-          <li>Add in your refactor stories</li>
-          <li>Define when the game will run.</li>
-        </ul>
-      </div>      
-      <div class="col-lg-6">    
-        <p class="lead">If you are a Product Owner</p>
-        <ul>
-          <li>Select an active game.</li>
-          <li>Add in your sprint stories</li>
-          <li>Assign bribes</li>
-          <li>You will be emailed the result when the game wins</li>
-        </ul>
+        <div class="caption text-center">
+		      <h4>{{ game.name }}</h4>
+		      <p>{{ game.gameCreator }}</p>
+		      <a href="" ng-click="redirectToGamePage(game)"  class="btn btn-block" role="button" ng-class="{ 'btn-primary' : !game.winner,  'btn-success' : game.winner }">Play This Game'</a>
+					<!-- {{ game.winner ? 'View winner' : 'Play This Game' }} -->
+		      <!--<button type="button" class="close" ng-click="deleteGame(game)">&times;</button> -->
+        </div>
       </div>
     </div>
-
-    <!-- <img src="assets/images/yeoman.png" alt="I'm Yeoman"> -->
   </div>
-</header>
-
-  <div class="container">  
-    <div class="row">
-        <form class="thing-form">
-        <p class="input-group">
-          <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame"/>
-          <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary" ng-disabled="!isLoggedIn" ng-click="addGame()">Add New Game</button>
-          </span>
-        </p>
-        <span ng-if="!isLoggedIn" class="label label-warning">Log in to add a new game</span>  
-      </form>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-6 col-md-4" ng-repeat="game in games">
-          <div class="thumbnail">
-            <img src="{{game.gameCreatorImageUrl}}" >
-            <div class="caption">
-              <h3>{{game.name}}</h3>
-              <p><a href="/game/{{game._id}}" class="btn btn-default" role="button">Play This Game</a>
-              <button type="button" class="close" ng-click="deleteGame(game)">&times;</button>
-              </p>
-            </div>
-          </div>
-      </div>
-    </div>
-  
-
-
-
-<!-- <div class="container">  
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}<button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a></li>
-      </ul>
-    </div>
-  </div>
-
-
-
-  <form class="thing-form">
-    <label>Syncs in realtime across clients</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new thing here." ng-model="newThing">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-click="addThing()">Add New</button>
-      </span>
-    </p>
-  </form>
 </div>
- -->
-<footer class="footer">
-  <div class="container">
-      <p>Spark Ventures: Hello World Project |        
-         <a target="_blank" href="https://github.com/Furze/bribesource/issues?state=open">Issues</a></p>
-  </div>
-</footer>

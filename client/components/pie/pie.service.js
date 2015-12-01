@@ -183,12 +183,19 @@ angular.module('storyApp')
     };
 
     return {
-        colors: [
-            '9CE0B1',
-            'B9EC47',
-            'F7B15E',
-            'FB2FC8',
-            '907A9D'
+	      rawColors: [
+	          '2196f3',
+	          '4caf50',
+	          '9c27b0',
+	          'ff9800',
+	          'e51c23'
+	      ],
+        colors: [   
+					'2196f3',
+          '4caf50',
+          '9c27b0',
+          'ff9800',
+          'e51c23'
         ].map(colr.fromHex),
         render: function(elementID, items) {
             var raphael = new Raphael(elementID, 700, 700);

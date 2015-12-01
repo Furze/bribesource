@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , socket, PieService) {
+  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , $timeout, socket, PieService) {
 
     $scope.errors = {};
     $scope.gameid = $stateParams.id
@@ -74,15 +74,21 @@ angular.module('storyApp')
           var pieChart = PieService.render('holder', items);
 
           pieChart.spin(winPos, function (){
+            jQuery('html').addClass('md-show');
             $scope.showWinner = true;
             $scope.$apply();
             $scope.game.winner = $scope.winner;
             $http.put('/api/games/'+$scope.gameid, $scope.game).then(function(gameUpdateResult){
               // TODO: sync ?
             });
+
           });
 
           //need to save the game winner
+          // 
+          $timeout(function() {
+            window.hideLoader();
+          },1000);
       })
     }
 

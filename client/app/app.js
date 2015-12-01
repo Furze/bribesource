@@ -4,6 +4,7 @@ angular.module('storyApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
+  'ngAnimate',
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap'
@@ -51,4 +52,8 @@ angular.module('storyApp', [
         }
       });
     });
+		
+		setTimeout(function() {
+			window.hideLoader();
+		},5000);
   });

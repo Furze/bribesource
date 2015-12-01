@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('GameCtrl', function ($scope, User, Auth, $stateParams, $http, socket, PieService, $interval) {
+  .controller('GameCtrl', function ($scope, User, Auth, $stateParams, $http, socket, PieService, $interval, $timeout) {
 
     $scope.errors = {};
     $scope.time = {
@@ -18,8 +18,11 @@ angular.module('storyApp')
 
     $http.get('/api/games/' + $scope.gameid).success(function (c) {
       $scope.game = c;
-      $scope.game.gamePlayDate = new Date($scope.game.gamePlayDate);
+      $scope.gameDate = new Date($scope.game.gamePlayDate);
       $scope.checkGameCreator();
+      $timeout(function() {
+        window.hideLoader();
+      },1000);
     });
 
     $scope.outcomes = [];
@@ -176,6 +179,7 @@ angular.module('storyApp')
 
 
     $scope.saveGame = function (game) {
+			game.gamePlayDate = $scope.gameDate;
       $http.put('/api/games/' + game._id, game).then(function (response) {
         $scope.game = response.data;
       });
@@ -199,11 +203,14 @@ angular.module('storyApp')
           color: PieService.colors[i % PieService.colors.length],
         };
         items.push(item);
+				var color = PieService.rawColors[i % PieService.colors.length];
+				outcome.color = '#' + color;
       }
 
       params.items = items;
-
-      PieService.render('holder', items);
+			$timeout(function() {
+      	PieService.render('holder', items);
+			}, 0);
     }
 
   });

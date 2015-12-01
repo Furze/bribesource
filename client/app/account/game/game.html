@@ -1,120 +1,162 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
+	<!-- game details -->
   <div class="row">
-    <div class="col-sm-12">
-      <h1>Game: {{game.name}}</h1>
-      <label>Game Creator/Owner</label> {{game.gameCreator}}
-      <p/>
-      <a ng-hide="game.winner || !currentUserIsGameCreator" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a>
-
-      <h3 ng-hide="!game.winner" style="color: green">Winner was: {{game.winner}}</h3>
-    </div>
+		<div class="col-lg-12">
+			<div class="jumbotron text-center">
+			  <h1>Game: {{game.name}}</h1>
+			  <p>Game Creator/Owner: {{game.gameCreator}}</p>
+			  <p ng-if="!game.winner" ><a class="btn btn-primary btn-lg" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a></p>
+				<div class="alert alert-success text-center" role="alert" ng-show="game.winner" >
+					<strong>Congratulations! The winner is: {{game.winner}}</strong> 
+				</div>
+			</div>
+		</div>
   </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Schedule Time</h2>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 col-sm-6">
-                <form class="bribe-form">
-                    <input ng-disabled="!currentUserIsGameCreator" type="datetime-local" class="form-control" ng-model="game.gamePlayDate" ng-change="saveGame(game)">
-                </form>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-                <h4>{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
-            </div>
-        </div>
-    </div>
-
-   <div class="container" ng-if="!game.winner && currentUserIsGameCreator">
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 class="page-header">Available Game Bribes:</h2>
-        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
-          <li>
-            <div class="col-xs-6">{{bribe.name}}</div>
-            <div class="col-xs-2">
-            <select ng-model="bribe.value" ng-change="saveBribe(bribe)" clas="col-xs-2">
-              <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
-            </select>
-              </div>
-            <div>
-          <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
-            </div>
-          </li>
-        </ul> 
-    </div>
+	<!-- end game details -->
+	<!-- schedule time -->
+  <div class="row">
     <div class="col-lg-12">
-     <form class="bribe-form">
-          <p class="input-group">
-            <input type="text" class="form-control" placeholder="Add a new bribe here." 
-             ng-model="newBribe.value"/>
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
-            </span>
-          </p>
-        </form>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Schedule Time</h3>
+				</div>
+				<div class="panel-body">
+          <form class="bribe-form" novalidate>
+              <input type="datetime-local" class="form-control" ng-model="gameDate" ng-change="saveGame(game)" ng-disabled="!currentUserIsGameCreator">
+							<h4 ng-if="time.days">{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
+          </form>
+				</div>
+			</div>
     </div>
   </div>
-  </div>
-
-   <div class="container" > 
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 class="page-header">Invitations <button type="button" class="close" ng-click="sendInvitations()">Send Invitations</button></h2>
-        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="invite in game.invitations">
-          <li>
-          {{invite.email}} <span  class="label label-info" ng-if="invite.sent">Invitation Sent</span>  <button type="button" class="close" ng-click="deleteInvite(invite)">&times;</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <form class="bribe-form">
-      <p class="input-group">
-        <input type="text" class="form-control" placeholder="email address" ng-model="newInvite.value"></input>
-        <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary" ng-click="addInvite()">Invite a product owner to this game</button>
-        </span>
-      </p>
-    </form>
-  </div>
-
-    <form ng-disabled="game.winner" class="thing-form">
-        <label>Add a new story</label>
-        <p class="input-group">
-            <input type="text" class="form-control" placeholder="Add a new story here." ng-model="newOutcome.value">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-disabled="game.winner" ng-click="addOutcome()">Add New Story</button>
-      </span>
-        </p>
-    </form>
-
- <div ng-disabled="game.winner" class="container">
+	<!-- end schedule time -->
+	<!-- invitations -->
   <div class="row">
-    <div ng-disabled="game.winner" class="col-lg-6">
-      <h3 class="page-header">Competing Stories:</h3>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="outcome in outcomes">
-        <li><a href="#" tooltip="{{outcome.info}}">{{outcome.name}}
-              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)">
-                  <option value="">---Please select---</option>
-                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>
-              </select>
-          <button type="button" class="close" ng-click="deleteOutcome(outcome)">&times;</button></a>
-        </li>
-      </ul>
-    </div>
-    <!-- <div class="col-lg-6">
-      <div id="holder" style="display: block; position:relative !important;"></div>
-    </div> -->
+    <div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading clearfix">
+		      <h3 class="panel-title pull-left">Invitations</h3> 
+					<button type="button" class="pull-right btn btn-success" ng-click="sendInvitations()" ng-disabled="!currentUserIsGameCreator">Send Invitations</button>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group" ng-repeat="invite in game.invitations track by $index">
+					  <li class="list-group-item">{{invite.email}} <span class="label label-info" ng-if="invite.sent">Invitation Sent</span> <button type="button" class="btn btn-danger btn-sm pull-right" ng-click="deleteInvite(invite)" ng-disabled="!currentUserIsGameCreator">&times;</button></li>
+					</ul>
+				</div>
+				<div class="panel-footer">
+		      <form class="bribe-form">
+		         <div class="input-group">
+		           <input type="email" class="form-control" placeholder="Invite a product owner to this game (email)" ng-model="newInvite.value" />
+		           <div class="input-group-btn">
+		             <button type="button" class="btn btn-primary" ng-click="addInvite()" ng-disabled="!currentUserIsGameCreator">Invite</button>
+		           </div>
+						 </div>
+		       </form>
+				</div>
+	    </div>
+		</div>
   </div>
-
-</div>
-
+	<!-- end invitations -->
+	<!-- bribes -->
+  <div class="row">
+    <div class="col-lg-12">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Available Bribes</h3>
+			  </div>
+			  <div class="panel-body">
+				 	<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>Bribe name</th>
+								<th>Bribe Value</th>
+								<th>Options</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="bribe in bribes track by bribe._id" >
+								<td>
+									{{bribe.name}}
+								</td>
+								<td>
+				          <select ng-model="bribe.value" ng-change="saveBribe(bribe)" class="form-control" placeholder="SELECT" ng-disabled="!currentUserIsGameCreator">
+				            <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
+				          </select>
+								</td>
+								<td>
+									<button type="button"  class="btn btn-danger btn-sm" ng-click="deleteBribe(bribe)" ng-disabled="!currentUserIsGameCreator">&times;</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			  </div>
+				<div class="panel-footer">
+		      <form class="bribe-form">
+		         <div class="input-group">
+		           <input type="text" class="form-control" placeholder="Add a new bribe here" ng-model="newBribe.value" ng-disabled="!currentUserIsGameCreator" />
+		           <div class="input-group-btn">
+		             <button type="button" class="btn btn-primary" ng-click="addBribe()" ng-disabled="!currentUserIsGameCreator">Add New Bribe</button>
+		           </div>
+						 </div>
+		       </form>
+				</div>
+			</div>
+  	</div>
+	</div>
+	<!-- end bribes -->
+	<!-- competing stories -->
+  <div class="row" >
+    <div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Competing Stories</h3>
+				</div>
+				<div class="panel-body">
+		   	 	<div class="col-lg-5">
+					 	<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Bribe name</th>
+									<th>Bribe Value</th>
+									<th>Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="outcome in outcomes track by outcome._id" >
+									<td>
+										<a href="#" tooltip="{{outcome.info}}" title="{{outcome.info}}" style='color: {{outcome.color }}'>{{outcome.name}}</a>
+									</td>
+									<td>
+			              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)" class="form-control" ng-disabled="!currentUserIsGameCreator">
+			                  <option value="">---Please select---</option>
+			                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>
+			              </select>
+									</td>
+									<td>
+										<button type="button"  class="btn btn-danger btn-sm" ng-click="deleteOutcome(outcome)" ng-disabled="!currentUserIsGameCreator">&times;</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+			    <div class="col-lg-7">
+			      <div id="holder" style="display: block; position:relative !important;" ng-if="outcomes.length > 0"></div>
+			    </div>
+		  	</div>
+				<div class="panel-footer">
+		      <form class="bribe-form">
+		         <div class="input-group">
+		           <input type="text" class="form-control" placeholder="Add a new outcome here" ng-model="newOutcome.value" />
+		           <div class="input-group-btn">
+		             <button type="button" class="btn btn-primary" ng-click="addOutcome()" ng-disabled="!currentUserIsGameCreator">Add New Story</button>
+		           </div>
+						 </div>
+		       </form>
+				</div>
+			</div>
+    </div>
+  </div>
+	<!-- end competing stories -->
 </div>

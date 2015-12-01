@@ -1,84 +1,83 @@
 'use strict';
 
-angular.module('storyApp')
-  .controller('MainCtrl', function ($scope, $http, $location, socket,Auth) {
-
-    $scope.games = [];
-
-    $scope.showHowTo=false;
-
-    $scope.toggleHowTo=function(){
-      $scope.showHowTo= !$scope.showHowTo;
-    }
-    
-    $scope.getGames = function() {
-      $http.get('/api/games').success(function(games) {
-        $scope.games = games;
-        socket.syncUpdates('game', $scope.games);
-      });
-    }
-
-    $scope.checkLoggedIn = function() {
-      Auth.isLoggedInAsync(function(val) {
-
-        $scope.isLoggedIn = val;
-        if($scope.isLoggedIn) {
-          var cu = Auth.getCurrentUser();
-          $scope.currentUserImageUrl = cu.google.image.url;
-          $scope.currentUserEmail = Auth.getCurrentUser().email;   
-          console.log($scope.currentUserEmail);
-        }
-      });
-    }
-    $scope.checkLoggedIn();
-    
-
-    $scope.addGame = function() {
-
-      if($scope.newGame === '') {
-        return;
-      }
-      $http.post('/api/games', { name: $scope.newGame, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(obj){
-        $location.path('game/' + obj.data._id)
-      })
-      $scope.newGame = '';
-    };
-
-    $scope.deleteGame = function(game) {
-      $http.delete('/api/games/' + game._id).then(function(){
-          $scope.getGames();
-      })
-    };
-
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('game');
-    });
-
-
-
-    $scope.awesomeThings = [];
-
-
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
-    });
-
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
-
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/thing/' + thing._id);
-    };
-
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('thing');
-    });
-
-    $scope.getGames();
+angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $location, $timeout, socket, Auth) {
+	// variables
+	$scope.showCompletedGames = false;
+  $scope.games = [];
+  $scope.showHowTo = false;
+	$scope.newGame = {
+		name: ''
+	}
+	// listeners
+  $scope.$on('$destroy', function () {
+    socket.unsyncUpdates('game');
+    socket.unsyncUpdates('thing');
   });
+	
+	
+	// bootstrap toggle for showing completed games or now
+	$scope.initializeToggle = function() {
+		$('.special-toggle-checkbox').bootstrapToggle().change(function() {
+			$scope.showCompletedGames = $(this).prop('checked');
+			$scope.$apply();
+		});
+	}
+	
+  $scope.toggleHowTo = function(){
+    $scope.showHowTo= !$scope.showHowTo;
+  }
+	
+  $scope.getGames = function() {
+    $http.get('/api/games').success(function(games) {
+      $scope.games = games;
+			$scope.gamesLoaded = true;
+      socket.syncUpdates('game', $scope.games);
+			
+			$timeout(function() {
+				window.hideLoader();
+			},1000);
+    });
+  }
+
+  $scope.checkLoggedIn = function() {
+    Auth.isLoggedInAsync(function(val) {
+      $scope.isLoggedIn = val;
+      if($scope.isLoggedIn) {
+        var cu = Auth.getCurrentUser();
+        $scope.currentUserImageUrl = cu.google.image.url;
+        $scope.currentUserEmail = Auth.getCurrentUser().email;   
+      }
+    });
+  }
+  
+  $scope.addGame = function() {
+    if($scope.newGame.name === '') {
+      return;
+    }
+    $http.post('/api/games', { name: $scope.newGame.name, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(){
+      $scope.getGames();
+    })
+    $scope.newGame = {};
+  };
+
+  $scope.deleteGame = function(game) {
+    $http.delete('/api/games/' + game._id).then(function(){
+      $scope.getGames();
+    })
+  };
+	
+	$scope.redirectToGamePage = function(game) {
+		// todo: add view game state
+		//if(game.winner) {
+		//	$location.path('/game/' + game._id + '/play');
+		//} else {
+			$location.path('/game/' + game._id);
+			//}
+	}
+	
+	// initial methods called
+	$scope.checkLoggedIn();
+  $scope.getGames();
+	$scope.initializeToggle();
+
+});
