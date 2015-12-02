@@ -11,6 +11,7 @@
 					</div>
 			</div>
 		</div>
+		
 	  <div class="row sell-unit" id="howto" ng-if="showHowTo">
 	    <div class="col-lg-6">
 	      <p class="lead">If you are a Sprint Team Member</p>
@@ -32,8 +33,10 @@
 	    </div>
 	  </div>
 		
+		<hr/>
+		
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-5">
 				<form>
 				  <div class="input-group">
 				    <input type="text" id="searchInput" class="form-control" placeholder="Search for game" ng-model="search" />
@@ -43,14 +46,12 @@
 				  </div>
 				</form>
 			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-lg-12">
-				<br/>
+			<div class="col-lg-2 text-center">
+				<h5 style='margin-bottom: 0px'>OR</h5>
+			</div>
+			<div class="col-lg-5">
 				<a href="/login" class="btn btn-primary btn-block" ng-if="!isLoggedIn">Login to add new game</a>
-				
-	      <form class="thing-form" ng-if="isLoggedIn">
+	      <form ng-if="isLoggedIn">
 	        <div class="input-group">
 	          <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame.name" />
 	          <span class="input-group-btn">
@@ -58,34 +59,46 @@
 	          </span>
 	        </div>
 	      </form>
-				
 			</div>
 		</div>
+
+		<hr/>
 	
 		<div class="row text-center">
 			<div class="col-lg-6 col-lg-offset-3">
-				<br/>
-			  <div class="form-group">
-	        <label for="completedGames">Show completed games</label>
-		      <div class="checkbox">
-		        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames">
-		      </div>
-			  </div>
+				<form class="form-inline">
+				  <div class="form-group">
+		        <label for="completedGames" style='margin-top: 5px; margin-right:10px'>Show completed games</label>
+			      <div class="checkbox">
+			        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames">
+			      </div>
+				  </div>
+				</form>
 			</div>
 		</div>
 	</div>
 	
   <div class="row" ng-if="gamesLoaded">
-	    <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-if="!game.winner || (game.winner && showCompletedGames)" >
+    <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-if="!game.winner || (game.winner && showCompletedGames)" >
+			
+			<div class="ribbon-container">
+				<div class="ribbon" ng-if="game.winner">
+					<p>{{ game.winner }}</p>
+				</div>
+			</div>
+			
       <div class="thumbnail">
         <img src="{{game.gameCreatorImageUrl}}" />
 
         <div class="caption text-center">
 		      <h4>{{ game.name }}</h4>
 		      <p>{{ game.gameCreator }}</p>
-		      <a href="" ng-click="redirectToGamePage(game)"  class="btn btn-block" role="button" ng-class="{ 'btn-primary' : !game.winner,  'btn-success' : game.winner }">Play This Game'</a>
-					<!-- {{ game.winner ? 'View winner' : 'Play This Game' }} -->
-		      <!--<button type="button" class="close" ng-click="deleteGame(game)">&times;</button> -->
+					<div class="btn-group">
+						<a href="/game/{{game._id}}" class="btn btn-primary" role="button">View Game Details</a>
+						<a href="/game/{{game._id}}/play" class="btn btn-success" role="button" ng-if="game.winner">View Game Winner</a>
+						<a href="/game/{{game._id}}/play" class="btn btn-warning" role="button" ng-if="!game.winner && hasPermissionToPlayGame(game.gameCreator)">Play the Game</a>
+					</div>
+					<!--<button type="button" class="close" ng-click="deleteGame(game)">&times;</button> -->
         </div>
       </div>
     </div>

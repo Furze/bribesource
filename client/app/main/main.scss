@@ -47,3 +47,52 @@
 .white-bg {
 	background: white;
 }
+
+.ribbon-container {
+  position: absolute;
+  overflow: hidden;
+  display: block;
+  top: 0;
+  right: 15px;
+	left: 15px;
+  height: 100%;
+}
+
+.ribbon {
+  background-color: #a00;
+	position: absolute;
+	right: -40px;
+	top: 13px;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+	-webkit-box-shadow: 0 0 10px #888;
+	-moz-box-shadow: 0 0 10px #888;
+	box-shadow: 0 0 10px #888;
+	width: 150px;
+  overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-word;
+	
+	p {
+	  border: 1px solid #faa;
+	  color: #fff;
+	  display: block;
+	  font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	  margin: 1px 0;
+	  padding: 6px 40px;
+	  text-align: center;
+	  text-decoration: none;
+		text-shadow: 0 0 5px #444;
+		width: 150px;
+		max-height: 46px;
+		overflow: hidden;
+	}
+}
+
+.toggle .toggle-group .toggle-off {
+	padding-left: 24px;
+}

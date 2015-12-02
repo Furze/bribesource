@@ -66,13 +66,13 @@ angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $loca
     })
   };
 	
-	$scope.redirectToGamePage = function(game) {
-		// todo: add view game state
-		//if(game.winner) {
-		//	$location.path('/game/' + game._id + '/play');
-		//} else {
-			$location.path('/game/' + game._id);
-			//}
+	$scope.hasPermissionToPlayGame = function(gameCreator) {
+		// todo: check is product owner?
+		if($scope.currentUserEmail === gameCreator) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	// initial methods called

@@ -7,7 +7,13 @@
 			<div class="jumbotron text-center">
 			  <h1>Game: {{game.name}}</h1>
 			  <p>Game Creator/Owner: {{game.gameCreator}}</p>
-			  <p ng-if="!game.winner" ><a class="btn btn-primary btn-lg" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">Play Now</a></p>
+				
+				<p ng-if="currentUserIsGameCreator">
+					<a class="btn btn-primary btn-lg" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">{{ game.winner ? 'View Game Results' : 'Play Now' }}</a>
+				</p>
+				<p ng-if="!currentUserIsGameCreator && game.winner">
+					<a class="btn btn-primary btn-lg" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">View Game Results</a>
+				</p>
 				<div class="alert alert-success text-center" role="alert" ng-show="game.winner" >
 					<strong>Congratulations! The winner is: {{game.winner}}</strong> 
 				</div>
@@ -81,8 +87,8 @@
 									{{bribe.name}}
 								</td>
 								<td>
-				          <select ng-model="bribe.value" ng-change="saveBribe(bribe)" class="form-control" placeholder="SELECT" ng-disabled="!currentUserIsGameCreator">
-				            <option value="{{n}}" ng-repeat="n in range(1,100)" ng-selected="bribe.value==n">{{n}}</option>
+				          <select ng-model="bribe.value.toString()" ng-change="saveBribe(bribe)" class="form-control" placeholder="SELECT" ng-disabled="!currentUserIsGameCreator">
+				            <option value="{{n}}" ng-repeat="n in range(1,100)">{{n}}</option>
 				          </select>
 								</td>
 								<td>
@@ -131,7 +137,7 @@
 									<td>
 			              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)" class="form-control" ng-disabled="!currentUserIsGameCreator">
 			                  <option value="">---Please select---</option>
-			                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes" ng-selected="outcome.bribe === bribe._id">{{bribe.name}}</option>
+			                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>
 			              </select>
 									</td>
 									<td>
