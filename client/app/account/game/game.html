@@ -30,7 +30,7 @@
 				</div>
 				<div class="panel-body">
           <form class="bribe-form" novalidate>
-              <input type="datetime-local" class="form-control" ng-model="gameDate" ng-change="saveGame(game)" ng-disabled="!currentUserIsGameCreator">
+              <input type="datetime-local" class="form-control" ng-model="gameDate" ng-change="saveGame(game)" ng-disabled="!currentUserIsGameCreator" required>
 							<h4 ng-if="time.days">{{time.days}} days {{time.hours}} hours {{time.minutes}} minutes {{time.seconds}} seconds</h4>
           </form>
 				</div>
@@ -52,9 +52,9 @@
 					</ul>
 				</div>
 				<div class="panel-footer">
-		      <form class="bribe-form">
+		      <form class="bribe-form" novalidate>
 		         <div class="input-group">
-		           <input type="email" class="form-control" placeholder="Invite a product owner to this game (email)" ng-model="newInvite.value" />
+		           <input type="email" class="form-control" placeholder="Invite a product owner to this game (email)" ng-model="newInvite.value"  required />
 		           <div class="input-group-btn">
 		             <button type="button" class="btn btn-primary" ng-click="addInvite()" ng-disabled="!currentUserIsGameCreator">Invite</button>
 		           </div>
@@ -99,9 +99,9 @@
 					</table>
 			  </div>
 				<div class="panel-footer">
-		      <form class="bribe-form">
+		      <form class="bribe-form" novalidate>
 		         <div class="input-group">
-		           <input type="text" class="form-control" placeholder="Add a new bribe here" ng-model="newBribe.value" ng-disabled="!currentUserIsGameCreator" />
+		           <input type="text" class="form-control" placeholder="Add a new bribe here" ng-model="newBribe.value" ng-disabled="!currentUserIsGameCreator" required />
 		           <div class="input-group-btn">
 		             <button type="button" class="btn btn-primary" ng-click="addBribe()" ng-disabled="!currentUserIsGameCreator">Add New Bribe</button>
 		           </div>
@@ -152,9 +152,9 @@
 			    </div>
 		  	</div>
 				<div class="panel-footer">
-		      <form class="bribe-form">
+		      <form class="bribe-form" novalidate>
 		         <div class="input-group">
-		           <input type="text" class="form-control" placeholder="Add a new outcome here" ng-model="newOutcome.value" />
+		           <input type="text" class="form-control" placeholder="Add a new outcome here" ng-model="newOutcome.value"  required/>
 		           <div class="input-group-btn">
 		             <button type="button" class="btn btn-primary" ng-click="addOutcome()" ng-disabled="!currentUserIsGameCreator">Add New Story</button>
 		           </div>

@@ -1,38 +1,83 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
-  <ul class="list-group">
-    <li class="list-group-item" ng-repeat="user in users">
-        <strong>{{user.name}}</strong><br>
-        <span class="text-muted">{{user.email}}</span>
-        <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-    </li>
-  </ul>
-</div>
 
- <div class="container">  
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Users</h3>
+				</div>
+				<div class="panel-body">
+				 	<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>User name</th>
+								<th>User email</th>
+								<th>Options</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="user in users track by user._id" >
+								<td>
+									{{user.name}}
+								</td>
+								<td>
+				          {{user.email}}
+								</td>
+								<td>
+									<button type="button"  class="btn btn-danger btn-sm" ng-click="delete(user)">Remove</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">Available Bribes:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="bribe in bribes">
-        <li>
-        {{bribe.name}} <a href="#" ng-click="saveBribe(bribe)" tooltip="{{bribe.info}}">save</a>
-        <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value">
-        <button type="button" class="close" ng-click="deleteBribe(bribe)">&times;</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <form class="thing-form">
-    <label>Syncs in realtime across clients</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new bribe here." ng-model="newBribe">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
-      </span>
-    </p>
-  </form>
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Available Bribes</h3>
+			  </div>
+			  <div class="panel-body">
+				 	<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>Bribe name</th>
+								<th>Bribe Value</th>
+								<th>Options</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="bribe in bribes track by bribe._id" >
+								<td>
+									{{bribe.name}}
+								</td>
+								<td>
+				          <input type="text" class="form-control" placeholder="Bribe Value" ng-model="bribe.value">
+								</td>
+								<td>
+									<button type="button"  class="btn btn-danger btn-sm" ng-click="deleteBribe(bribe)">Remove</button>
+									<button type="button"  class="btn btn-success btn-sm pull-right" ng-click="saveBribe(bribe)">Save</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			  </div>
+				<div class="panel-footer">
+		      <form class="bribe-form" novalidate>
+		         <div class="input-group">
+		           <input type="text" class="form-control" placeholder="Add a new bribe here" ng-model="newBribe" required />
+		           <div class="input-group-btn">
+		             <button type="button" class="btn btn-primary" ng-click="addBribe()">Add New Bribe</button>
+		           </div>
+						 </div>
+		       </form>
+				</div>
+			</div>
+  	</div>
+	</div>
 </div>
 
