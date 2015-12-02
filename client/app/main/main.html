@@ -79,7 +79,7 @@
 	</div>
 	
   <div class="row" ng-if="gamesLoaded">
-    <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-if="!game.winner || (game.winner && showCompletedGames)" >
+    <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-show="!game.winner || (game.winner && showCompletedGames)" >
 			
 			<div class="ribbon-container">
 				<div class="ribbon" ng-if="game.winner">

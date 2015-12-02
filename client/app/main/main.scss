@@ -96,3 +96,34 @@
 .toggle .toggle-group .toggle-off {
 	padding-left: 24px;
 }
+
+.game-item {
+  opacity: 1;
+}
+
+.game-item.ng-hide.ng-animate {
+	display: none !important;
+}
+
+.game-item.ng-leave {
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+  opacity: 1;
+}
+.game-item.ng-leave-active {
+	opacity: 0;
+}
+.game-item.ng-enter {
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+  opacity: 0;
+}
+.game-item.ng-enter-active {
+  opacity: 1;
+}
