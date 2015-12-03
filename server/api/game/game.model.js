@@ -14,7 +14,10 @@ var GameSchema = new Schema({
   invitations: [{
   	email: String,
   	sent: Boolean
-  }]
+  }],
+	participants: [{
+		email: String
+	}]
 });
 
 module.exports = mongoose.model('Game', GameSchema);

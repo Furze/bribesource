@@ -16,7 +16,7 @@
 						<h4 class="text-center" ng-show="!game.showWinner	">{{ _Outcomes_ }}</h4>
 						<div class="list-group" ng-repeat="outcome in outcomes">
 						  <a href="#" class="list-group-item">
-						    <h4 class="list-group-item-heading"  ng-style="{ color: outcome.color.toHex() }">Bribe: {{outcome.bribename}} <br/> {{ _Outcome_ }}: {{outcome.name}} </h4>
+						    <h4 class="list-group-item-heading"  ng-style="{ color: outcome.color.toHex() }">{{ _Outcome_ }}: {{outcome.name}} <br/> Bribe: {{outcome.bribename}}</h4>
 						  </a>
 						</div>
 					</div>

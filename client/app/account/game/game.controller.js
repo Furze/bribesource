@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('GameCtrl', function ($scope, User, Auth, $stateParams, $http, socket, PieService, $interval, $timeout) {
+  .controller('GameCtrl', function ($scope, User, Auth, $stateParams, $location, $window, $http, socket, PieService, $interval, $timeout) {
 
     $scope.errors = {};
     $scope.time = {
@@ -20,10 +20,7 @@ angular.module('storyApp')
       $scope.game = c;
       $scope.gameDate = new Date($scope.game.gamePlayDate);
       $scope.checkGameCreator();
-      $timeout(function() {
-        window.hideLoader();
-      },1000);
-    });
+		});
 
     $scope.outcomes = [];
 
@@ -99,9 +96,33 @@ angular.module('storyApp')
             $scope.currentUserIsGameCreator = true;
           }
         }
+				$scope.checkIsParticipant();
+				$scope.checkAndAddParticipant();
+	      $timeout(function() {
+	        window.hideLoader();
+	      },1000);
       });
     };
-
+		
+		$scope.checkIsParticipant = function() {
+			$scope.isParticipant = _.findIndex($scope.game.participants, { email: $scope.currentUserEmail }) > -1;
+		}
+		
+		$scope.checkAndAddParticipant = function() {
+			// ?participate in url - store gameid in localStorage for redirection later on and redirect user
+			// else if logged in and game exists in localStorage, add user to game participants list 
+			if($location.search().participate) {
+				localStorage.setItem('participateGame', $scope.gameid);
+				$window.location.href = '/auth/google';
+			} else if(localStorage.getItem('participateGame')) {
+				if($scope.isLoggedIn) {
+					$scope.addParticipant();
+				}
+				localStorage.removeItem('participateGame');
+			}
+		}
+		
+		
     $scope.bribes = [];
 
     $scope.getBribes = function () {
@@ -158,11 +179,40 @@ angular.module('storyApp')
       if ($scope.newInvite.value == '') {
         return;
       }
-      $scope.game.invitations.push({email: $scope.newInvite.value});
-      $scope.newInvite.value = '';
-      $scope.saveGame($scope.game);
+      $http.post('/api/games/' + $scope.game._id + '/invite', { email: $scope.newInvite.value }).then(function (response) {
+        $scope.game = response.data;
+				$scope.newInvite.value = '';
+      });
     };
+		
+		$scope.addParticipant = function() {
+			if($scope.isLoggedIn) {
+				var participants = $scope.game.participants || [];
+				var exists = _.findIndex($scope.game.participants, { email: $scope.currentUserEmail });
+				// if doesn't exist
+				if(exists === -1) {
+		      $http.post('/api/games/' + $scope.game._id + '/participant', { email: $scope.currentUserEmail }).then(function (response) {
+		        $scope.game = response.data;
+						$scope.checkIsParticipant();
+		      });
+				}
+			} else {
+				window.location = '/game/' + $scope.gameid + '?participate=true';
+			}
+		}
 
+    $scope.deleteInvite = function (invite) {
+      $http.delete('/api/games/' + $scope.game._id + '/invite/' + invite._id).then(function (response) {
+        $scope.game = response.data;
+      });
+    };
+		
+    $scope.deleteParticipant = function (participant) {
+      $http.delete('/api/games/' + $scope.game._id + '/participant/' + participant._id).then(function (response) {
+        $scope.game = response.data;
+      });
+    };
+		
     $scope.sendInvitations = function () {
       for (var i = 0; i < $scope.game.invitations.length; i++) {
         var i = $scope.game.invitations[i];
@@ -173,15 +223,6 @@ angular.module('storyApp')
       }
     };
 
-    $scope.deleteInvite = function (invite) {
-      for (var i = 0; i < $scope.game.invitations.length; i++) {
-        var i = $scope.game.invitations[i];
-        if (i.email.valueOf() === invite.email.valueOf()) {
-          $scope.game.invitations.splice(i, 1);
-        }
-        $scope.saveGame($scope.game);
-      }
-    };
 
 
     $scope.saveGame = function (game) {
@@ -190,6 +231,7 @@ angular.module('storyApp')
         $scope.game = response.data;
       });
     };
+		
     $scope.play = function () {
 
       var params = {};

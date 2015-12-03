@@ -47,9 +47,8 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
 		
-		var formInvitations = req.body.invitations || [];
 		var updated = _.merge(game, req.body);
-		updated.invitations = formInvitations;
+		
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, game);
@@ -83,6 +82,90 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+exports.addInviteToGame = function(req,res) {
+  Game.findById(req.params.id, function (err, game) {
+    if (err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+		
+		if(!game.invitations) {
+			game.invitations = [{ email: req.body.email }];
+		} else {
+			game.invitations.push({ email: req.body.email });
+		}
+		
+		game.save(function(err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, game);
+		})
+  });
+}
+
+exports.addParticipantToGame = function(req,res) {
+  Game.findById(req.params.id, function (err, game) {
+    if (err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+		
+		if(!game.invitations) {
+			game.participants = [{ email: req.body.email }];
+		} else {
+			game.participants.push({ email: req.body.email });
+		}
+		
+		game.save(function(err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, game);
+		})
+  });
+}
+
+exports.deleteInvitation = function(req,res) {
+  Game.findById(req.params.id, function (err, game) {
+    if (err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+		
+		var index = -1;
+		for(var i = 0; i < game.invitations.length; i++) {
+			var gameInviteId = game.invitations[i].id;
+			if(req.params.inviteId === gameInviteId) {
+				index = i;
+				break;
+			}
+		}
+		
+		if(index > -1) {
+			game.invitations.splice(index, 1);
+		}
+		game.save(function(err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, game);
+		})
+  });
+}
+
+exports.deleteParticipant = function(req,res) {
+  Game.findById(req.params.id, function (err, game) {
+    if (err) { return handleError(res, err); }
+    if(!game) { return res.send(404); }
+		
+		var index = -1;
+		for(var i = 0; i < game.participants.length; i++) {
+			var gameParticipantId = game.participants[i].id;
+			if(req.params.participantId === gameParticipantId) {
+				index = i;
+				break;
+			}
+		}
+		
+		if(index > -1) {
+			game.participants.splice(index, 1);
+		}
+		game.save(function(err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, game);
+		})
+  });
+}
 
 function handleError(res, err) {
   return res.send(500, err);

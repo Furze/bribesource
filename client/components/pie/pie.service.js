@@ -180,7 +180,7 @@ angular.module('storyApp')
             var animationTime = 18 * 1000;
 
             pie.animate({
-                transform:'r' + spin + ',' + width + ',' + height,
+                transform:'r-' + spin + ',' + width + ',' + height,
             }, animationTime, 'cubic-bezier(0.1, 0, 0, 1)');
 
             setTimeout(done, animationTime);

@@ -45,7 +45,11 @@ angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $loca
       if($scope.isLoggedIn) {
         var cu = Auth.getCurrentUser();
         $scope.currentUserImageUrl = cu.google.image.url;
-        $scope.currentUserEmail = Auth.getCurrentUser().email;   
+        $scope.currentUserEmail = Auth.getCurrentUser().email;
+				
+				if(localStorage.getItem('participateGame')) {
+					$location.path('/game/' + localStorage.getItem('participateGame'));
+				}   
       }
     });
   }

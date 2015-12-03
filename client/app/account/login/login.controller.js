@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, $state, $window) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -24,6 +24,6 @@ angular.module('storyApp')
     };
 
     $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
+			$window.location.href = '/auth/' + provider;
     };
   });
