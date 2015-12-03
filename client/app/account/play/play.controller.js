@@ -67,30 +67,34 @@ angular.module('storyApp')
       }
       params.items = items;
 
-      $http.post('/api/decision/runDecisionSimulation', params).success(function (result) {
-        $scope.winner = result.results[0].name;
-
-        var winPos = 0;
-        for (var i = 0, len = items.length; i < len; i++) {
-          if (items[i].name === $scope.winner) {
-            winPos = i;
-          }
-        }
-
-        var pieChart = PieService.render('holder', items);
-
-        pieChart.spin(winPos, function () {
-          jQuery('html').addClass('md-show');
-          $scope.showWinner = true;
-          $scope.$apply();
+      if (!$scope.game.winner) {
+        $http.post('/api/decision/runDecisionSimulation', params).success(function (result) {
+          $scope.winner = result.results[0].name;
           $scope.game.winner = $scope.winner;
-          $http.put('/api/games/' + $scope.gameid, $scope.game).then(function (gameUpdateResult) {
-            // TODO: sync ?
+          $http.put('/api/games/' + $scope.gameid, $scope.game).then(function () {
+            $scope.renderPie(items);
+          }, function (response) {
+            //TODO: display some kind of error that the game was not played and should try again.
           });
-
         });
-      })
+      } else {
+        $scope.winner = $scope.game.winner;
+        $scope.renderPie(items);
+      }
+    };
+
+    $scope.renderPie = function (items) {
+      var winPos = 0;
+      for (var i = 0, len = items.length; i < len; i++) {
+        if (items[i].name === $scope.winner) {
+          winPos = i;
+        }
+      }
+      var pieChart = PieService.render('holder', items);
+      pieChart.spin(winPos, function () {
+        jQuery('html').addClass('md-show');
+        $scope.showWinner = true;
+        $scope.$apply();
+      });
     }
-
-
   });
