@@ -5,7 +5,14 @@
 
 angular.module('storyApp')
 .factory('PieService', function pieservice ($rootScope) {
-
+	var magicNumber = 200;
+	var width = 350;
+	var height = 350;
+	if(window.innerWidth < 768) {
+		width = 175;
+		height = 175;
+		magicNumber = 100;
+	}
     // useful functions
     var utils = {
         // returns a random float
@@ -173,7 +180,7 @@ angular.module('storyApp')
             var animationTime = 18 * 1000;
 
             pie.animate({
-                transform:'r' + spin + ',350,350',
+                transform:'r' + spin + ',' + width + ',' + height,
             }, animationTime, 'cubic-bezier(0.1, 0, 0, 1)');
 
             setTimeout(done, animationTime);
@@ -198,8 +205,8 @@ angular.module('storyApp')
           'e51c23'
         ].map(colr.fromHex),
         render: function(elementID, items) {
-            var raphael = new Raphael(elementID, 700, 700);
-            var pieChart = raphael.pieChart(350, 350, 200, items, '#fff');
+            var raphael = new Raphael(elementID, width * 2, height * 2);
+            var pieChart = raphael.pieChart(width, height, magicNumber, items, '#fff');
             return pieChart;
         },
     }; 
