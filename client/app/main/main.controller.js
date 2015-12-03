@@ -2,7 +2,7 @@
 
 angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $location, $timeout, socket, Auth) {
 	// variables
-	$scope.showCompletedGames = false;
+	$scope.showCompletedGames = true;
   $scope.games = [];
   $scope.showHowTo = false;
 	$scope.newGame = {
@@ -54,8 +54,12 @@ angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $loca
     if($scope.newGame.name === '') {
       return;
     }
-    $http.post('/api/games', { name: $scope.newGame.name, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(){
-      $scope.getGames();
+    $http.post('/api/games', { name: $scope.newGame.name, gameCreator: $scope.currentUserEmail, gameCreatorImageUrl: $scope.currentUserImageUrl }).then(function(result){
+			if(result && result.data._id) {
+				$location.path('/game/' + result.data._id);
+			} else {
+				$scope.getGames();
+			}
     })
     $scope.newGame = {};
   };

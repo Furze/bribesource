@@ -70,7 +70,7 @@
 				  <div class="form-group">
 		        <label for="completedGames" style='margin-top: 5px; margin-right:10px'>Show completed games</label>
 			      <div class="checkbox">
-			        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames">
+			        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames" checked>
 			      </div>
 				  </div>
 				</form>
@@ -80,7 +80,7 @@
 	
   <div class="row" ng-if="gamesLoaded">
     <div class="col-sm-6 col-md-4 game-item" ng-repeat="game in games.slice().reverse() | filter:search" ng-show="!game.winner || (game.winner && showCompletedGames)" >
-			
+			<button type="button" class="close" ng-click="deleteGame(game)" ng-if="game.gameCreator === currentUserEmail">&times;</button>
 			<div class="ribbon-container">
 				<div class="ribbon" ng-if="game.winner">
 					<p>{{ game.winner }}</p>
@@ -98,7 +98,6 @@
 						<a href="/game/{{game._id}}/play" class="btn btn-success" role="button" ng-if="game.winner">View Game Winner</a>
 						<a href="/game/{{game._id}}/play" class="btn btn-warning" role="button" ng-if="!game.winner && hasPermissionToPlayGame(game.gameCreator)">Play the Game</a>
 					</div>
-					<!--<button type="button" class="close" ng-click="deleteGame(game)">&times;</button> -->
         </div>
       </div>
     </div>
