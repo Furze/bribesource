@@ -170,11 +170,11 @@ angular.module('storyApp')
             var spin = lastSpin + (360 * 20) - r;
             lastSpin = spin + r;
 
-            var animationTime = 10 * 1000;
+            var animationTime = 18 * 1000;
 
             pie.animate({
-                transform:'r-' + spin + ',350,350',
-            }, animationTime, 'cubic-bezier(0.2, 0, 0, 1)');
+                transform:'r' + spin + ',350,350',
+            }, animationTime, 'cubic-bezier(0.1, 0, 0, 1)');
 
             setTimeout(done, animationTime);
         };

@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('storyApp')
-  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , $timeout, socket, PieService) {
+  .controller('PlayCtrl', function ($scope, User, Auth, $stateParams , $http , $timeout, socket, PieService, ngAudio) {
 
     $scope.errors = {};
     $scope.gameid = $stateParams.id
-
+			
+		$scope.audio = ngAudio.load('assets/audio/wheel.mp3');
+		
     $http.get('/api/games/'+$scope.gameid).success(function(c) {
         $scope.game = c;
 
@@ -37,7 +39,11 @@ angular.module('storyApp')
               }
             }
 
-            $scope.play();
+						window.hideLoader();
+						$timeout(function() {
+							$scope.audio.play();
+	            $scope.play();							
+						}, 1000);
           });
       });
 
@@ -83,12 +89,6 @@ angular.module('storyApp')
             });
 
           });
-
-          //need to save the game winner
-          // 
-          $timeout(function() {
-            window.hideLoader();
-          },1000);
       })
     }
 
