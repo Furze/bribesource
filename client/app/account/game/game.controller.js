@@ -106,7 +106,13 @@ angular.module('storyApp')
 
     $scope.getBribes = function () {
       $http.get('/api/bribes?game=' + $scope.gameid).success(function (bribes) {
-        $scope.bribes = bribes;
+        _.each(bribes, function(bribe) {
+					if(bribe.value) {
+        		bribe.value = bribe.value.toString();
+					}
+        })
+				$scope.bribes = bribes;
+				
         socket.syncUpdates('bribe', $scope.bribes);
       });
     };

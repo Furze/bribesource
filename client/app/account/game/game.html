@@ -87,7 +87,7 @@
 									{{bribe.name}}
 								</td>
 								<td>
-				          <select ng-model="bribe.value.toString()" ng-change="saveBribe(bribe)" class="form-control" placeholder="SELECT" ng-disabled="!currentUserIsGameCreator">
+				          <select ng-model="bribe.value" ng-change="saveBribe(bribe)" class="form-control" placeholder="SELECT" ng-disabled="!currentUserIsGameCreator">
 				            <option value="{{n}}" ng-repeat="n in range(1,100)">{{n}}</option>
 				          </select>
 								</td>
