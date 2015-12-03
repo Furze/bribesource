@@ -54,7 +54,7 @@ angular.module('storyApp')
     $scope.play = function () {
 
       var params = {};
-      var items = []
+      var items = [];
 
       for (var i = 0; i < $scope.outcomes.length; i++) {
         var outcome = $scope.outcomes[i];
