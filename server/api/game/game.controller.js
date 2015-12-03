@@ -46,7 +46,10 @@ exports.update = function(req, res) {
   Game.findById(req.params.id, function (err, game) {
     if (err) { return handleError(res, err); }
     if(!game) { return res.send(404); }
-    var updated = _.merge(game, req.body);
+		
+		var formInvitations = req.body.invitations || [];
+		var updated = _.merge(game, req.body);
+		updated.invitations = formInvitations;
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, game);
