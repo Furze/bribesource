@@ -5,8 +5,8 @@
 		<div class="row">
 			<div class="col-lg-12">
 					<div class="text-center">
-				    <h1>Pimp my story</h1>
-				    <p class="lead">bribe your developers to work on your story rather than refactoring. </p>
+				    <h1>Pimp my {{ _outcome_ }}</h1>
+				    <p class="lead">bribe your developers to work on your {{ _outcome_ }} rather than refactoring. </p>
 				    <a href="#" ng-click="toggleHowTo()"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
 					</div>
 			</div>
@@ -16,19 +16,19 @@
 	    <div class="col-lg-6">
 	      <p class="lead">If you are a Sprint Team Member</p>
 	      <ul>
-	        <li>Create a new sprint.</li>
+	        <li>Create a new {{ _game_ }}.</li>
 	        <li>Define your bribes and their values</li>
-	        <li>Add in your refactor stories</li>
-	        <li>Define when the game will run.</li>
+	        <li>Add in your refactor {{ _outcomes_ }}</li>
+	        <li>Define when the {{ _game_ }} will run.</li>
 	      </ul>
 	    </div>
 	    <div class="col-lg-6">
 	      <p class="lead">If you are a Product Owner</p>
 	      <ul>
-	        <li>Select an active game.</li>
-	        <li>Add in your sprint stories</li>
+	        <li>Select an active {{ _game_ }}.</li>
+	        <li>Add in your {{ _game_ }} {{ _outcomes_ }}</li>
 	        <li>Assign bribes</li>
-	        <li>You will be emailed the result when the game wins</li>
+	        <li>You will be emailed the result when the {{ _game_ }} wins</li>
 	      </ul>
 	    </div>
 	  </div>
@@ -39,7 +39,7 @@
 			<div class="col-lg-5">
 				<form>
 				  <div class="input-group">
-				    <input type="text" id="searchInput" class="form-control" placeholder="Search for game" ng-model="search" />
+				    <input type="text" id="searchInput" class="form-control" placeholder="Search for {{ _game_ }}" ng-model="search" />
 	          <span class="input-group-btn">
 	            <button type="submit" class="btn btn-primary" ng-click="search()">Search</button>
 	          </span>
@@ -50,12 +50,12 @@
 				<h5 style='margin-bottom: 0px'>OR</h5>
 			</div>
 			<div class="col-lg-5">
-				<a href="/login" class="btn btn-primary btn-block" ng-if="!isLoggedIn">Login to add new game</a>
+				<a href="/login" class="btn btn-primary btn-block" ng-if="!isLoggedIn">Login to add new {{ _game_ }}</a>
 	      <form ng-if="isLoggedIn">
 	        <div class="input-group">
-	          <input type="text" class="form-control" placeholder="Add a new game here." ng-model="newGame.name" />
+	          <input type="text" class="form-control" placeholder="Add a new {{ _game_ }} here." ng-model="newGame.name" />
 	          <span class="input-group-btn">
-	            <button type="submit" class="btn btn-primary" ng-click="addGame()">Add New Game</button>
+	            <button type="submit" class="btn btn-primary" ng-click="addGame()">Add New {{ _Game_ }}</button>
 	          </span>
 	        </div>
 	      </form>
@@ -68,7 +68,7 @@
 			<div class="col-lg-6 col-lg-offset-3">
 				<form class="form-inline">
 				  <div class="form-group">
-		        <label for="completedGames" style='margin-top: 5px; margin-right:10px'>Show completed games</label>
+		        <label for="completedGames" style='margin-top: 5px; margin-right:10px'>Show completed {{ _games_ }}</label>
 			      <div class="checkbox">
 			        <input type="checkbox" id="completedGames" data-toggle="toggle" class="special-toggle-checkbox" ng-model="showCompletedGames" checked>
 			      </div>
@@ -94,9 +94,9 @@
 		      <h4>{{ game.name }}</h4>
 		      <p>{{ game.gameCreator }}</p>
 					<div class="btn-group">
-						<a href="/game/{{game._id}}" class="btn btn-primary" role="button">View Game Details</a>
+						<a href="/game/{{game._id}}" class="btn btn-primary" role="button">View {{ _Game_ }} Details</a>
 						<a href="/game/{{game._id}}/play" class="btn btn-success" role="button" ng-if="game.winner">View Game Winner</a>
-						<a href="/game/{{game._id}}/play" class="btn btn-warning" role="button" ng-if="!game.winner && hasPermissionToPlayGame(game.gameCreator)">Play the Game</a>
+						<a href="/game/{{game._id}}/play" class="btn btn-warning" role="button" ng-if="!game.winner && hasPermissionToPlayGame(game.gameCreator)">Run the {{ _Game_ }}</a>
 					</div>
         </div>
       </div>

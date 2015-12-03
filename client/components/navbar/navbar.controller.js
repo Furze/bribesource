@@ -3,7 +3,7 @@
 angular.module('storyApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
-      'title': 'Home',
+      'title': 'Stories',
       'link': '/'
     }];
 
