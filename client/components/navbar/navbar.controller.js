@@ -4,7 +4,7 @@ angular.module('storyApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Stories',
-      'link': '/'
+      'link': '/main'
     }];
 
     $scope.isCollapsed = true;

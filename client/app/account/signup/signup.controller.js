@@ -15,8 +15,8 @@ angular.module('storyApp')
           password: $scope.user.password
         })
         .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
+          // Account created, redirect to main
+          $location.path('/main');
         })
         .catch( function(err) {
           err = err.data;
