@@ -48,7 +48,7 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading clearfix">
 		      <h3 class="panel-title pull-left">Invitations</h3> 
-					<button type="button" class="pull-right btn btn-success" ng-click="sendInvitations()" ng-disabled="!currentUserIsGameCreator">Send Invitations</button>
+					<button type="button" class="pull-right btn btn-success" ng-click="sendInvitations()" ng-disabled="!currentUserIsGameCreator && !game.winner">Send Invitations</button>
 				</div>
 				<div class="panel-body">
 					<ul class="list-group" ng-repeat="invite in game.invitations track by $index">
