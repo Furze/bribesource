@@ -176,7 +176,7 @@
 		         <div class="input-group">
 		           <input type="text" class="form-control" placeholder="Add a new {{ _outcome_ }} here" ng-model="newOutcome.value"  required/>
 		           <div class="input-group-btn">
-		             <button type="button" class="btn btn-primary" ng-click="addOutcome()" ng-disabled="!currentUserIsGameCreator">Add New {{ _OUTCOME_ }}</button>
+		             <button type="button" class="btn btn-primary" ng-click="addOutcome()" ng-disabled="!currentUserIsGameCreator && !isParticipant">Add New {{ _OUTCOME_ }}</button>
 		           </div>
 						 </div>
 		       </form>
