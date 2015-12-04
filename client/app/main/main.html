@@ -88,10 +88,10 @@
 			</div>
 			
       <div class="thumbnail">
-        <img src="{{game.gameCreatorImageUrl}}" />
+        <a href="/game/{{game._id}}"><img src="{{game.gameCreatorImageUrl}}" /></a>
 
         <div class="caption text-center">
-		      <h4>{{ game.name }}</h4>
+		      <h4><a href="/game/{{game._id}}">{{ game.name }}</a></h4>
 		      <p>{{ game.gameCreator }}</p>
 					<div class="btn-group">
 						<a href="/game/{{game._id}}" class="btn btn-primary" role="button">View {{ _Game_ }} Details</a>
