@@ -15,7 +15,7 @@
 					<a class="btn btn-primary btn-lg" href="/game/{{game._id}}/play" tooltip="{{outcome.info}}">View Game Results</a>
 				</p>
 				
-				<p ng-if="!isParticipant">
+				<p ng-if="!isParticipant && !game.winner">
 					<a class="btn btn-primary btn-lg" href="" tooltip="{{outcome.info}}" ng-click="addParticipant()">Participate</a>
 				</p>
 				<div class="alert alert-success text-center" role="alert" ng-show="game.winner" >
@@ -97,7 +97,7 @@
 						<thead>
 							<tr>
 								<th>Bribe name</th>
-								<th>Bribe Value</th>
+								<th>Bribe weighting</th>
 								<th>Options</th>
 							</tr>
 						</thead>
@@ -144,8 +144,9 @@
 					 	<table class="table table-striped table-bordered">
 							<thead>
 								<tr>
-									<th>Bribe name</th>
-									<th>Bribe Value</th>
+									<th>Story name</th>
+									<th>Bribe</th>
+									<th>Weighting</th>
 									<th>Options</th>
 								</tr>
 							</thead>
@@ -159,6 +160,9 @@
 			                  <option value="">---Please select---</option>
 			                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>
 			              </select>
+									</td>
+									<td>
+										<span ng-if="outcome.bribe">{{ getBribeValue(outcome.bribe) }}</span>
 									</td>
 									<td>
 										<button type="button"  class="btn btn-danger btn-sm" ng-click="deleteOutcome(outcome)" ng-disabled="!currentUserIsGameCreator">&times;</button>

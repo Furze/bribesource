@@ -222,6 +222,17 @@ angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, 
       $scope.game = response.data;
     });
   };
+	
+	
+	$scope.getBribeValue = function(bribeId) {
+		var value = '';
+		_.each($scope.bribes, function(bribe) {
+			if(bribe._id === bribeId) {
+				value = bribe.value;
+			}
+		})
+		return value;
+	}
 
   $scope.play = function () {
     var params = {};
@@ -244,9 +255,13 @@ angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, 
       outcome.color = '#' + color;
     }
     params.items = items;
-    $timeout(function () {
-      PieService.render('holder', items);
-    }, 0);
+		try {
+	    $timeout(function () {
+	      PieService.render('holder', items);
+	    }, 0);
+		} catch(exception) {
+		
+		}
   }
 
   $http.get('/api/games/' + $scope.gameid).success(function (c) {
