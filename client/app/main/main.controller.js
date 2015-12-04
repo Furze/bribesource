@@ -69,9 +69,11 @@ angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $loca
   };
 
   $scope.deleteGame = function(game) {
-    $http.delete('/api/games/' + game._id).then(function(){
-      $scope.getGames();
-    })
+		if(confirm("Are you sure you want to delete this game?")) {
+	    $http.delete('/api/games/' + game._id).then(function(){
+	      $scope.getGames();
+	    })
+		}
   };
 	
 	$scope.hasPermissionToPlayGame = function(gameCreator) {
