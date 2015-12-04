@@ -20,5 +20,10 @@ module.exports = {
     //         process.env.MONGOHQ_URL ||
     //         process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||            
     //         'mongodb://bribe:bribe@ds051980.mongolab.com:51980/bribe'
-  }
+  },
+	gmail: {
+		account: 'bribesource@gmail.com',
+		password: 'SuperPassword'
+	},
+	domain: 'http://pimpmystory-bribe.rhcloud.com/'
 };

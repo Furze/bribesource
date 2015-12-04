@@ -2,18 +2,19 @@
 
 var _ = require('lodash');
 var nodemailer = require('nodemailer');
+var config = require('../config/environment');
 
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'bribesource@gmail.com',
-        pass: 'SuperPassword'
+        user: config.gmail.account,
+        pass: config.gmail.password
     }
 });
- 
+ 	
 exports.sendInvitations = function(game,done) {
-	var link = 'http://localhost:9000/game/' + game._id + '?participate=true';
+	var link = config.domain +'http://localhost:9000/game/' + game._id + '?participate=true';
 	if(game && game.invitations.length > 0) {
 		var emails = [];
 		_.forEach(game.invitations,function(invitation){
