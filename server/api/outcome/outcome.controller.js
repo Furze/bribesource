@@ -37,13 +37,12 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Outcome.create(req.body, function(err, outcome) {
     if(err) { return handleError(res, err); }
-    return res.json(201, outcome);g
+    return res.json(201, outcome);
   });
 };
 
 // Updates an existing outcome in the DB.
 exports.update = function(req, res) {
-  console.log("here");
   if(req.body._id) { delete req.body._id; }
   Outcome.findById(req.params.id, function (err, outcome) {
     if (err) { return handleError(res, err); }
