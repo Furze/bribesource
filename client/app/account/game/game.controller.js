@@ -148,7 +148,9 @@ angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, 
   };
 
   $scope.saveBribe = function (bribe) {
-    $http.put('/api/bribes/' + bribe._id, bribe);
+    $http.put('/api/bribes/' + bribe._id, bribe).success(function() {
+    	$scope.play();
+    });
   };
 
   $scope.deleteBribe = function (bribe) {
