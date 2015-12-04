@@ -155,7 +155,7 @@
 										<a href="#" tooltip="{{outcome.info}}" title="{{outcome.info}}" style='color: {{outcome.color }}'>{{outcome.name}}</a>
 									</td>
 									<td>
-			              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)" class="form-control" ng-disabled="!currentUserIsGameCreator">
+			              <select id="outcomebribe" ng-model="outcome.bribe" ng-change="saveOutcome(outcome)" class="form-control">
 			                  <option value="">---Please select---</option>
 			                  <option value="{{bribe._id}}" ng-repeat="bribe in bribes">{{bribe.name}}</option>
 			              </select>
