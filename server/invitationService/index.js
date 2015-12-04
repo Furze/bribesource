@@ -27,7 +27,7 @@ exports.sendInvitations = function(game,done) {
 		var output = '<b>Game: </b>' + game.name + '<br/>';
 		output += '<b>Date: </b>' + game.gamePlayDate  + '<br/>';
 		output += '<b>Game Creator: </b>' + game.gameCreator + '<br/>';
-		output += '<a href="' + link + '">Click here</a> to subscribe to the game or we will send you an email closer to the time!';
+		output += '<a href="' + link + '">Click here</a> to participate in the game!';
 	
 		var mailOptions = {
 	    from: 'Bribe Source ✔ <bribesource@gmail.com>',
