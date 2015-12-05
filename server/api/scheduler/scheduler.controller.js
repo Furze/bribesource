@@ -27,7 +27,6 @@ exports.index = function(req, res, next) {
   */
   Game.find({gamePlayDate: {$exists: true, $ne: null}, winner: {$exists: false}, scheduledToRun: false}).exec(function(err, games) {
     if(err) return handleError(res, err);
-
     async.each(games, function(game, callback) {
       //set cron job flag to true for this game
       game.scheduledToRun = true;
@@ -36,61 +35,81 @@ exports.index = function(req, res, next) {
 
         var gameDate = new Date(game.gamePlayDate);
         scheduler.scheduleJob(gameDate,function(game) {
-          //Get bribes for this game
-          request.get({url: req.protocol + '://' + req.get('host') +'/api/bribes?game=' + game._id}, function(err, response, body) {
-            if (err || response.statusCode != 200) return callback(err ? err : null);
-
-            var bribes = JSON.parse(response.body);
-
-            //Get outcomes for this game
-            request.get({url: req.protocol + '://' + req.get('host') +'/api/outcomes?game=' + game._id}, function(err, response, body) {
-              if (err || response.statusCode != 200) return callback(err ? err : null);
-
-              var outcomes = JSON.parse(response.body);
-              var items = [];
-              var params = {};
-
-              _.map(outcomes, function(outcome) {
-                var bribevalue = 1;
-                _.map(bribes, function(bribe) {
-                  if (outcome.bribe == bribe._id && bribe.value) {
-                     bribevalue = bribe.value;
-                  }
-                });
-                var item = {
-                  name: outcome.name,
-                  weight: Number(bribevalue)
-                };
-                items.push(item);
+          
+          async.waterfall([
+            //Get bribes for this game
+            function(cb) {
+              request({
+                url: req.protocol + '://' + req.get('host') +'/api/bribes?game=' + game._id,
+                method: 'GET'
+              }, function(err, response, body) {
+                if (err) return cb(err);
+                var bribes = JSON.parse(response.body);
+                return cb(null, bribes);
               });
-             
-              params.items = items;
+            },
+            //Get outcomes for this game
+            function(bribes, cb) {
+              request({
+                url: req.protocol + '://' + req.get('host') +'/api/outcomes?game=' + game._id,
+                method: 'GET'
+              }, function(err, response, body) {
+                if (err) return cb(err);
+                var outcomes = JSON.parse(response.body);
+                var items = [];
+                var params = {};
 
-              //Run simulator for this game
+                _.map(outcomes, function(outcome) {
+                  var bribevalue = 1;
+                  _.map(bribes, function(bribe) {
+                    if (outcome.bribe == bribe._id && bribe.value) {
+                       bribevalue = bribe.value;
+                    }
+                  });
+                  var item = {
+                    name: outcome.name,
+                    weight: Number(bribevalue)
+                  };
+                  items.push(item);
+                });
+               
+                params.items = items;
+
+                return cb(null, params);
+              });
+            },
+            //Run simulator for this game
+            function(params, cb) {
               request({
                 uri: req.protocol + '://' + req.get('host') +'/api/decision/runDecisionSimulation',
                 method: 'POST',
                 json: params
               }, function(err, response, body) {
-                if (err || response.statusCode != 200) return callback(err ? err : null);
-
+                if (err) return cb(err);
                 game.winner = response.body.results[0].name;
-
-                //Update game result
-                request({
+                return cb(null, game);
+              });
+            },
+            //Update game result
+            function(game, cb) {
+              request({
                   uri: req.protocol + '://' + req.get('host') +'/api/games/' + game._id,
                   method: 'PUT',
                   json: game
                 }, function(err, response, body) {
-                  if (err || response.statusCode != 200) return callback(err ? err : null);
-
-                  //finish execution for this game
-                  return callback();
+                  if (err) return cb(err);
+                  return cb();
                 });
-              });
-            });
+            }
+          ], function(err) {
+            if (err) return callback(err);
+            //finish execution for this game
           });
+
         }.bind(null,game));
+        setTimeout(function() {
+          return callback();
+        }, 0);
       });
       
     }, function(err) {
