@@ -1,0 +1,21 @@
+@media (min-width: 1200px) {
+  .outcome-table {
+    min-height:450px;
+  }
+}
+
+@media (min-width:768px) and (max-width:1199px) {
+  .outcome-body {
+    min-height:750px;
+  }  
+  .outcome-table {
+    z-index:9999;
+  }
+}
+
+@media (max-width: 767px) {
+  .outcome-table {
+    z-index:9999;
+    min-height:1px;
+  }
+}
