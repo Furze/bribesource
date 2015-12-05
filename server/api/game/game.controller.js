@@ -11,6 +11,7 @@
 
 var _ = require('lodash');
 var Game = require('./game.model');
+var moment = require('moment');
 
 var InvitationService =  require('../../invitationService');
 
@@ -48,7 +49,8 @@ exports.update = function(req, res) {
     if(!game) { return res.send(404); }
 		
 		var updated = _.merge(game, req.body);
-		
+    //if winner not set, and game time has bee changed to future, reset cron shedule
+    if (!updated.winner && moment(updated.gamePlayDate).isAfter(moment())) updated.scheduledToRun = false;
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, game);
