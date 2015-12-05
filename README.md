@@ -11,6 +11,7 @@ deploy to openshift with 'grunt buildcontrol:openshift'
 - Andrew
 
 ## Scheduling
+- Jeff Yu
 - Abizer
 - Jason
 
