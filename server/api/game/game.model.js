@@ -7,6 +7,7 @@ var GameSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
+  scheduledToRun: { type: Boolean, default: false},
   winner: String,
   gameCreator: String,
   gameCreatorImageUrl: String,

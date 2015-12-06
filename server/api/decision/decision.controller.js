@@ -3,25 +3,26 @@
 var _ = require('lodash');
 
 exports.runDecisionSimulation = function(req, res) {
-  var result = startDecisionSimulation(req.body.items);
-  console.log('Result: ');
-  console.log(result.results);
-  return res.json(result);
+  startDecisionSimulation(req.body.items, function(result) {
+    return res.json(result);  
+  });
 };
 
-function startDecisionSimulation(items) {
+function startDecisionSimulation(items, callback) {
   var result = {};
-  result.results = simulate(items, []);
-  return result;
+  simulate(items, [], function(resultList) {
+    result.results = resultList;
+    return callback(result);
+  });
 };
 
-function simulate(items, resultList) {
+function simulate(items, resultList, callback) {
   if (items.length == 1) {
     resultList.push({
       'name': items[0].name,
       'position': resultList.length + 1
     });
-    return resultList;
+    return callback(resultList);
   }
 
   var totalWeight = calculateTotalWeight(items);
@@ -40,15 +41,15 @@ function simulate(items, resultList) {
   result.random = randomNumber + ' from range:  1-' + totalWeight;
   result.portions = portions;
   result.winner = determineWinner(portions, randomNumber);
-  console.log('Iteration: ' + (resultList.length + 1));
-  console.log(result);
 
   resultList.push({
     'name': result.winner,
     'position': resultList.length + 1
   });
   removeWinner(result.winner, items);
-  return simulate(items, resultList);
+  setTimeout(function() {
+    simulate(items, resultList, callback);
+  }, 0);
 }
 
 function removeWinner(winner, items) {

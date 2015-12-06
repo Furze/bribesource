@@ -52,7 +52,6 @@ angular.module('storyApp')
 
 
     $scope.play = function () {
-
       var params = {};
       var items = [];
 
