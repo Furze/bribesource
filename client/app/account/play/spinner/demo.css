@@ -7,11 +7,11 @@
 #holder {
     height: 600px;
     left: 50%;
-    margin: -120px 0 0 -320px;
+    margin: -100px 0 0 -320px;
     position: absolute;
     top: 50%;
     width: 640px;
-		overflow: hidden;
+	overflow: hidden;
 }
 #copy {
     bottom: 0;
@@ -53,7 +53,7 @@
 	}
 	
 	.panel-body {
-		min-height: 700px !important;
+		min-height: 500px;
 	}
 	
 }
