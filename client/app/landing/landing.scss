@@ -1,7 +1,38 @@
-.logo {
-  max-width: 300px;
-  max-height: 300px;
+
+body.landing {
+	background-image: url('/assets/images/website-design-background.png');
+	background-size: cover;
+	
+	img {
+		max-width: 100%;
+	}
+	
+	h2 {
+		color: white;
+		margin-top: 0px;
+		
+		a {
+			color: white;
+			text-decoration: underline;
+		}
+		
+		@media (max-width:768px) {
+			a {
+				clear: both;
+				display: block;
+				margin-top: 15px;
+				font-size: 16px;
+			}
+		}
+	}
+	
+	@media (max-width:768px) {
+		.panel-body {
+			min-height: 0;
+		}
+	}
 }
+
 
 .white-bg {
   background: white;

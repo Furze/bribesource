@@ -2,9 +2,16 @@
  * App-wide Styles
  */
 
+html {
+	overflow-y: scroll;
+}
+
 html, body {
 	height: 100%;
 	position: relative;
+}
+
+body {
 	background-color: #636363;
 	background-image: url('/assets/images/bg.png');
 }

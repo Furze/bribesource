@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('storyApp').controller('LandingCtrl', function ($scope, socket, Auth) {
+angular.module('storyApp').controller('LandingCtrl', function ($scope, $timeout, Auth) {
   $scope.checkLoggedIn = function() {
     Auth.isLoggedInAsync(function(val) {
       $scope.isLoggedIn = val;
@@ -9,15 +9,16 @@ angular.module('storyApp').controller('LandingCtrl', function ($scope, socket, A
         $scope.currentUserImageUrl = cu.google.image.url;
         $scope.currentUserEmail = Auth.getCurrentUser().email;
       }
+			if(localStorage.getItem('participateGame')) {
+				$location.path('/game/' + localStorage.getItem('participateGame'));
+			}
+			$timeout(function() {
+				window.hideLoader();
+			},1000);
     });
   }
-
-  // listeners
-  $scope.$on('$destroy', function () {
-    socket.unsyncUpdates('game');
-    socket.unsyncUpdates('thing');
-  });
-
+	
+	jQuery('body').addClass('landing');
   // initial methods called
   $scope.checkLoggedIn();
 });

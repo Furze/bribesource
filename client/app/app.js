@@ -49,6 +49,7 @@ angular.module('storyApp', [
     $rootScope.$on('$stateChangeStart', function (event, next) {
 
       jQuery('html').removeClass('md-show');
+			jQuery('body').removeClass('landing')
 			
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
