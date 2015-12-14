@@ -4,7 +4,7 @@
 
 'use strict';
 
-var thing = require('./outcome.model');
+var outcome = require('./outcome.model');
 
 exports.register = function(socket) {
   outcome.schema.post('save', function (doc) {

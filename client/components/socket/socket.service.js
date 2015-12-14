@@ -28,13 +28,16 @@ angular.module('storyApp')
        * @param {Array} array
        * @param {Function} cb
        */
-      syncUpdates: function (modelName, array, cb) {
+      syncUpdates: function (modelName, array, filter, cb) {
         cb = cb || angular.noop;
 
         /**
          * Syncs item creation/updates on 'model:save'
          */
         socket.on(modelName + ':save', function (item) {
+          if (filter && !filter(item)) {
+            return;
+          }
           var oldItem = _.find(array, {_id: item._id});
           var index = array.indexOf(oldItem);
           var event = 'created';
@@ -55,6 +58,9 @@ angular.module('storyApp')
          * Syncs removed items on 'model:remove'
          */
         socket.on(modelName + ':remove', function (item) {
+          if (filter && !filter(item)) {
+            return;
+          }
           var event = 'deleted';
           _.remove(array, {_id: item._id});
           cb(event, item, array);

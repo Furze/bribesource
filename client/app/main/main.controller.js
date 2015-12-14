@@ -11,7 +11,6 @@ angular.module('storyApp').controller('MainCtrl', function ($scope, $http, $loca
 	// listeners
   $scope.$on('$destroy', function () {
     socket.unsyncUpdates('game');
-    socket.unsyncUpdates('thing');
   });
 	
 	

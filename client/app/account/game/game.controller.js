@@ -2,6 +2,10 @@
 
 angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, $stateParams, $location, $window, $http, socket, PieService, $interval, $timeout) {
 
+  function objectBelongsToThisGame(obj) {
+    return obj.game === $scope.gameid;
+  }
+
   var format = function (n) {
     if (n < 0) {
       n += 1;
@@ -30,16 +34,13 @@ angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, 
 
   $scope.$on('$destroy', function () {
     socket.unsyncUpdates('outcome');
-  });
-
-  $scope.$on('$destroy', function () {
     socket.unsyncUpdates('bribe');
   });
 
   $scope.getOutcomes = function () {
     $http.get('/api/outcomes?game=' + $scope.gameid).success(function (outcomes) {
       $scope.outcomes = outcomes;
-      socket.syncUpdates('outcome', $scope.outcomes);
+      socket.syncUpdates('outcome', $scope.outcomes, objectBelongsToThisGame);
       if ($scope.bribes.length > 0) {
         $scope.play();
       }
@@ -130,7 +131,7 @@ angular.module('storyApp').controller('GameCtrl', function ($scope, User, Auth, 
         }
       })
       $scope.bribes = bribes;
-      socket.syncUpdates('bribe', $scope.bribes);
+      socket.syncUpdates('bribe', $scope.bribes, objectBelongsToThisGame);
       if ($scope.outcomes.length > 0) {
         $scope.play();
       }
