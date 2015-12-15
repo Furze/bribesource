@@ -35,6 +35,9 @@ var all = {
   // MongoDB connection options
   mongo: {
     options: {
+      server : {
+        auto_reconnect: true
+      },
       db: {
         safe: true
       }
