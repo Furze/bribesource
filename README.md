@@ -1,6 +1,7 @@
 # Pimp my story
 
 deploy to openshift with 'grunt buildcontrol:openshift'
+
 to deploy to heroku, read the DEPLOYMENT TO HEROKU section below
 
 
