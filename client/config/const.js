@@ -1,6 +1,7 @@
 'use strict';
 
 var config = {
+  'projectUrl': 'https://github.com/gerazenobi/bribesource',
   'issuesUrl': 'https://trello.com/b/Nj4KVFIe/bribe-myventure'
 };
 
