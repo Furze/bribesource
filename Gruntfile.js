@@ -31,7 +31,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
-      dist: 'dist'
+      dist: process.env.HEROKU_DIR || 'dist'
     },
     express: {
       options: {
@@ -160,9 +160,8 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*',
-            '!<%= yeoman.dist %>/.openshift',
-            '!<%= yeoman.dist %>/Procfile'
+            '!<%= yeoman.dist %>/.git',
+            '!<%= yeoman.dist %>/.openshift'
           ]
         }]
       },
@@ -352,7 +351,6 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'bower_components/**/*',
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
             'index.html'
@@ -366,8 +364,17 @@ module.exports = function (grunt) {
           expand: true,
           dest: '<%= yeoman.dist %>',
           src: [
+            'bower.json',
             'package.json',
             'server/**/*'
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: 'deployment/heroku',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*'
           ]
         }]
       },
